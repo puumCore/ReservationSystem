@@ -1,0 +1,66 @@
+
+.tree-table-view .column-header, .tree-table-view .column-header .filler {
+    -fx-background-color: #0082C6;
+}
+
+.tree-table-view .column-header .label {
+    -fx-font-family: 'Montserrat Medium';
+    -fx-font-size: 14px;
+    -fx-text-fill: #fefefe;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.tree-table-view .cell {
+    -fx-font-family: 'Montserrat Medium';
+    -fx-font-size: 12px;
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cell-size: 25px;
+    -fx-background-color:  #f4f9fb;
+    -fx-border-color:   #f4f9fb;
+}
+
+.tree-table-view .tree-table-row-cell:selected {
+    -fx-background-color: #FEDF2C;
+}
+
+.tree-table-row-cell:selected > .tree-table-cell {
+    -fx-background-color: #FEFF99;
+}
+
+.tree-table-view .increment-button, .tree-table-view .decrement-button {
+    -fx-background-color: transparent;
+    -fx-bacground-radius: 2em;
+}
+
+.tree-table-view .scroll-bar:horizontal .track, .tree-table-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 0em;
+}
+
+.tree-table-view .scroll-bar:horizontal .thumb, .tree-table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #0082C6;
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 5em;
+}
+
+.tree-table-view {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.tree-table-view .scroll-bar:vertical {
+    -fx-pref-width: 16.5;
+    -fx-padding: 3;
+}
+
+.tree-table-view .scroll-bar:horizontal {
+    -fx-pref-height: 16.5;
+    -fx-padding: 3;
+}
+
+.tree-table-view .scroll-bar, .tree-table-view .scroll-bar:pressed, .tree-table-view .scroll-bar:focused {
+    -fx-font-size: 15;
+}

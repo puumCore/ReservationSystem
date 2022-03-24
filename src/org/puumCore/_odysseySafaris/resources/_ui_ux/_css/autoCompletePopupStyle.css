@@ -1,0 +1,16 @@
+.jfx-autocomplete-popup {
+    -fx-font-family: "Montserrat Medium";
+    -fx-font-size: 12px;
+    -fx-letter-spacing: 2px;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+}
+
+.jfx-autocomplete-popup .list-cell:filled:selected {
+    -fx-background-color: rgb(0, 99, 177);
+    -fx-font-size: 13px;
+}
+
+.jfx-autocomplete-popup .list-cell {
+    -fx-background-color: rgb(253, 253, 253);
+}
