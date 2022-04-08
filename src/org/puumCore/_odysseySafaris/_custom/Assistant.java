@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -212,6 +214,19 @@ public abstract class Assistant extends WatchDog {
         return Pattern.matches("[+]?[0-9]+", param);
     }
 
+
+    protected final Runnable home_skeleton(final String fxmlResourcePath, final StackPane stackPane) {
+        return () -> Platform.runLater(() -> {
+            try {
+                Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlResourcePath)));
+                stackPane.getChildren().add(node);
+            } catch (IOException e) {
+                e.printStackTrace();
+                load_runnable_into_a_thread(write_stack_trace(e)).start();
+                Platform.runLater(() -> programmer_error(e).showAndWait());
+            }
+        });
+    }
 
     protected final void fading_animation(Node outgoing, Node incoming) {
         new FadeOut(outgoing).play();

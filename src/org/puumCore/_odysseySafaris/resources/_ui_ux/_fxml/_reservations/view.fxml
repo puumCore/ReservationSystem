@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-
-<AnchorPane prefHeight="604.0" prefWidth="795.0" stylesheets="@../../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller._reservations.ViewCtrl">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="1303.0" stylesheets="@../../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller._reservations.ViewCtrl">
    <children>
-      <AnchorPane prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
+      <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
          <effect>
             <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
          </effect>
@@ -34,9 +33,9 @@
             </StackPane>
          </children>
       </AnchorPane>
-      <ScrollPane layoutY="77.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="1303.0">
+      <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1270.0">
          <content>
-            <JFXTreeTableView fx:id="treeTable" prefHeight="511.0" prefWidth="1783.0" stylesheets="@../../_css/table_style.css">
+            <JFXTreeTableView fx:id="treeTable" prefHeight="474.0" prefWidth="1783.0" stylesheets="@../../_css/table_style.css">
                <columns>
                   <TreeTableColumn fx:id="idCol" prefWidth="40.0" text="ID" />
                   <TreeTableColumn fx:id="clientCol" prefWidth="325.0" text="Column X">
