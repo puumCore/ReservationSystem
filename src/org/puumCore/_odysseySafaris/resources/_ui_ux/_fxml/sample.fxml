@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1320.0" stylesheets="@../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller.Controller">
-   <children>
-      <AnchorPane>
-         <children>
-            <HBox fillHeight="false" layoutX="7.849999904632568" layoutY="7.849999904632568" spacing="17.5">
-               <children>
-                  <JFXButton focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_view_page" prefHeight="30.0" prefWidth="58.0" ripplerFill="#e8f4ff" style="-fx-text-fill: #000000;" styleClass="sub_menu" text="View" />
-                  <JFXButton focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_add_page" prefHeight="30.0" prefWidth="54.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="Add" />
-                  <JFXButton focusTraversable="false" layoutX="86.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_log_page" prefHeight="30.0" prefWidth="51.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="Log" />
-                  <JFXButton focusTraversable="false" layoutX="158.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_about_page" prefHeight="30.0" prefWidth="66.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="About" />
-               </children>
-            </HBox>
-            <StackPane layoutX="7.85" layoutY="65.8499984741211" style="-fx-background-color: #fefefe; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="7.85" AnchorPane.leftAnchor="7.85" AnchorPane.rightAnchor="7.85" AnchorPane.topAnchor="68.14999999999998">
-               <children>
-                  <StackPane fx:id="aboutPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0">
-                     <children>
-                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="35.0">
-                           <children>
-                              <Label styleClass="chart-title" text="ReservationSystem" />
-                              <Label layoutX="305.0" layoutY="10.0" styleClass="chart-title" text="Version 1.0.0" />
-                              <Label styleClass="chart-title" text="This is a software system designed to digitize the existing traditional reservation workflow." />
-                              <Label layoutX="334.0" layoutY="66.0" styleClass="chart-title" text="Built on 23rd March 2022" />
-                              <Label layoutX="10.0" layoutY="66.0" styleClass="chart-title" text="This software is a property to Odyssey Safaris E.A. Ltd" />
-                              <Label layoutX="172.0" layoutY="122.0" styleClass="chart-title" text="Odyssey Safaris E.A. Ltd (C) 2022" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </StackPane>
-                  <StackPane fx:id="logsPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0" />
-                  <StackPane fx:id="addPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0" />
-                  <StackPane fx:id="viewPane" prefHeight="604.0" prefWidth="1303.0" />
-               </children>
-               <effect>
-                  <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
-               </effect>
-            </StackPane>
-         </children>
-      </AnchorPane>
-   </children>
+<StackPane fx:id="workSpacePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1320.0" stylesheets="@../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller.Controller">
+    <children>
+        <AnchorPane>
+            <children>
+                <HBox fillHeight="false" layoutX="7.849999904632568" layoutY="7.849999904632568" spacing="17.5">
+                    <children>
+                        <JFXButton focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_view_page" prefHeight="30.0" prefWidth="58.0" ripplerFill="#e8f4ff" style="-fx-text-fill: #000000;" styleClass="sub_menu" text="View" />
+                        <JFXButton focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_add_page" prefHeight="30.0" prefWidth="54.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="Add" />
+                        <JFXButton focusTraversable="false" layoutX="86.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_log_page" prefHeight="30.0" prefWidth="51.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="Log" />
+                        <JFXButton focusTraversable="false" layoutX="158.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#show_about_page" prefHeight="30.0" prefWidth="66.0" ripplerFill="#e8f4ff" styleClass="sub_menu" text="About" />
+                    </children>
+                </HBox>
+                <StackPane layoutX="7.85" layoutY="65.8499984741211" style="-fx-background-color: #fefefe;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.14999999999998">
+                    <children>
+                        <StackPane fx:id="aboutPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0">
+                            <children>
+                                <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="35.0">
+                                    <children>
+                                        <Label styleClass="chart-title" text="ReservationSystem" />
+                                        <Label layoutX="305.0" layoutY="10.0" styleClass="chart-title" text="Version 1.0.0" />
+                                        <Label styleClass="chart-title" text="This is a software system designed to digitize the existing traditional reservation workflow." />
+                                        <Label layoutX="334.0" layoutY="66.0" styleClass="chart-title" text="Built on 23rd March 2022" />
+                                        <Label layoutX="10.0" layoutY="66.0" styleClass="chart-title" text="This software is a property to Odyssey Safaris E.A. Ltd" />
+                                        <Label layoutX="172.0" layoutY="122.0" styleClass="chart-title" text="Odyssey Safaris E.A. Ltd (C) 2022" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                        <StackPane fx:id="logsPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0" />
+                        <StackPane fx:id="addPane" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="604.0" prefWidth="1303.0" />
+                        <StackPane fx:id="viewPane" prefHeight="604.0" prefWidth="1303.0" />
+                    </children>
+                    <padding>
+                        <Insets bottom="7.85" top="7.85" />
+                    </padding>
+                </StackPane>
+            </children>
+        </AnchorPane>
+    </children>
 </StackPane>

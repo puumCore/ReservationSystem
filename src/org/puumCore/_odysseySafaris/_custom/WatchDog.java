@@ -20,11 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.puumCore._odysseySafaris.Main;
-import org.puumCore._odysseySafaris._object._logs.Log;
+import org.puumCore._odysseySafaris._models._object.Log;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -33,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 /**
  * @author Puum Core (Mandela Muriithi)<br>
@@ -45,18 +44,20 @@ public class WatchDog {
     private final String PATH_TO_INFO_FOLDER = Main.RESOURCE_PATH.getAbsolutePath().concat("\\_watchDog\\_log\\");
     private final String PATH_TO_STACK_TRACE_ERROR_FOLDER = Main.RESOURCE_PATH.getAbsolutePath().concat("\\_watchDog\\_error\\");
 
-
-    protected final boolean NOT_connected_to_the_internet() {
+    public final String get_property_value(String property, String pathToPropertiesFile) {
+        String value = null;
         try {
-            URL url = new URL("http://www.google.com");
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.connect();
-            return false;
-        } catch (Exception e) {
+            FileReader fileReader = new FileReader(pathToPropertiesFile);
+            Properties properties = new Properties();
+            properties.load(fileReader);
+            value = properties.getProperty(property);
+            fileReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
             new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
         }
-        return true;
+        return value;
     }
 
     public final void system_exit() {
@@ -72,6 +73,22 @@ public class WatchDog {
             }
         }
         System.exit(0);
+    }
+
+
+    protected final Alert get_dynamic_alert(String header, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initOwner(Main.stage);
+        alert.setTitle(Main.stage.getTitle());
+        alert.setHeaderText(header);
+        alert.setContentText("Click below to see the desired information.");
+        TextArea textArea = new TextArea(text);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        alert.getDialogPane().setExpandableContent(textArea);
+        return alert;
     }
 
     protected final boolean i_want_to(String actionName) {
@@ -190,7 +207,7 @@ public class WatchDog {
         return new Task<Object>() {
             @Override
             protected Object call() {
-                log.setTimeStamp(time_stamp());
+                log.setTimeStamp(get_time_stamp());
                 write_object_of_an_array_into_a_json_file(new Gson().toJsonTree(log, Log.class), PATH_TO_INFO_FOLDER.concat(gate_date_for_file_name()).concat(".json"));
                 return null;
             }
@@ -251,25 +268,25 @@ public class WatchDog {
         return () -> {
             BufferedWriter bw = null;
             try {
-                File log = new File(PATH_TO_STACK_TRACE_ERROR_FOLDER.concat(gate_date_for_file_name().concat(" stackTrace_log.txt")));
-                if (!log.exists()) {
-                    Files.write(log.toPath(), String.format("This is a newly created file [ %s ]\n\n", time_stamp()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
+                File errLog = new File(PATH_TO_STACK_TRACE_ERROR_FOLDER.concat(gate_date_for_file_name().concat(" stackTrace_log.txt")));
+                if (!errLog.exists()) {
+                    Files.write(errLog.toPath(), String.format("This is a newly created file [ %s ]\n\n", get_time_stamp()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
                 }
-                if (log.canWrite() & log.canRead()) {
-                    FileWriter fw = new FileWriter(log, true);
+                if (errLog.canWrite() & errLog.canRead()) {
+                    FileWriter fw = new FileWriter(errLog, true);
                     bw = new BufferedWriter(fw);
                     StringWriter stringWriter = new StringWriter();
                     PrintWriter printWriter = new PrintWriter(stringWriter);
                     exception.printStackTrace(printWriter);
                     String exceptionText = stringWriter.toString();
                     bw.write("\n ##################################################################################################"
-                            + " \n " + time_stamp()
+                            + " \n " + get_time_stamp()
                             + "\n " + exceptionText
                             + "\n\n");
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
-                programmer_error(ex).show();
+                Platform.runLater(() -> programmer_error(ex).show());
             } finally {
                 try {
                     if (bw != null) {
@@ -277,7 +294,7 @@ public class WatchDog {
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    programmer_error(ex).show();
+                    Platform.runLater(() -> programmer_error(ex).show());
                 }
             }
         };
@@ -288,7 +305,7 @@ public class WatchDog {
         return get_date().replaceAll("-", " ");
     }
 
-    public final String time_stamp() {
+    public final String get_time_stamp() {
         return String.format("%s %s", get_date(), get_time());
     }
 

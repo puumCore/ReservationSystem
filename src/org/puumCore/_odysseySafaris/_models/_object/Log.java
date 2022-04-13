@@ -1,5 +1,6 @@
-package org.puumCore._odysseySafaris._object._logs;
+package org.puumCore._odysseySafaris._models._object;
 
+import com.google.gson.GsonBuilder;
 import org.puumCore._odysseySafaris._custom.WatchDog;
 
 /**
@@ -16,11 +17,11 @@ public class Log {
     private String info;
 
     public Log() {
-        this.timeStamp = new WatchDog().time_stamp();
+        this.timeStamp = new WatchDog().get_time_stamp();
     }
 
     public Log(String action, String info) {
-        this.timeStamp = new WatchDog().time_stamp();
+        this.timeStamp = new WatchDog().get_time_stamp();
         this.action = action;
         this.info = info;
     }
@@ -48,4 +49,14 @@ public class Log {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public boolean isEmpty() {
+        return this.toString().equals("{}");
+    }
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this, Log.class);
+    }
+
 }

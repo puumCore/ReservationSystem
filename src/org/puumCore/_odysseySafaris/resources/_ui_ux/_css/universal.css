@@ -1,7 +1,8 @@
 .hand_cursor,
 .jfx-button,
 .jfx-combo-box,
-.jfx-date-picker {
+.jfx-date-picker,
+.jfx-time-picker {
     -fx-cursor: hand;
 }
 
@@ -85,12 +86,16 @@
 .input_text,
 .search_text,
 .jfx-combo-box,
-.jfx-date-picker .jfx-text-field {
+.jfx-date-picker .jfx-text-field,
+.jfx-time-picker {
     -fx-font-family: 'Montserrat Medium';
     -fx-font-size: 14px;
     -fx-text-fill: #1C1C1C;
     -fx-prompt-text-fill: #AAAAAA;
-    -fx-padding: 0 17 0 17;
+}
+
+.input_text {
+   -fx-padding: 0 17 0 17;
 }
 
 .search_text {
@@ -98,7 +103,8 @@
 }
 
 .jfx-combo-box,
-.jfx-date-picker {
+.jfx-time-picker,
+.jfx-date-picker  {
     -fx-padding: 0 7 0 17;
 }
 
@@ -110,15 +116,15 @@
     -jfx-unfocus-color: transparent;
 }
 
-.jfx-date-picker .input-line {
+.jfx-date-picker .input-line, .jfx-time-picker .input-line {
     -fx-background-color: transparent;
 }
 
-.jfx-date-picker .input-focused-line {
+.jfx-date-picker .input-focused-line, .jfx-time-picker .input-focused-line {
     -fx-background-color: transparent;
 }
 
-.jfx-date-picker .arrow-button .jfx-svg-glyph {
+.jfx-date-picker .arrow-button .jfx-svg-glyph, .jfx-time-picker .arrow-button .jfx-svg-glyph {
     -jfx-size: 16px;
 }
 

@@ -31,12 +31,12 @@ public class ActionButtonTableCell<S> extends TreeTableCell<S, JFXButton> {
                 " -fx-cursor: hand;", this.jfxButton.getStyle()));
     }
 
-    public S get_current_item() {
-        return getTreeTableView().getTreeItem(getIndex()).getValue();
-    }
-
     public static <S> Callback<TreeTableColumn<S, JFXButton>, TreeTableCell<S, JFXButton>> for_table_column(String label, Function<S, S> function) {
         return param -> new ActionButtonTableCell<>(label, function);
+    }
+
+    public S get_current_item() {
+        return getTreeTableView().getTreeItem(getIndex()).getValue();
     }
 
     @Override

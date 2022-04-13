@@ -10,11 +10,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="controlsfx-8.40.11" level="application" />
     <orderEntry type="library" name="commons-lang3-3.9" level="application" />
-    <orderEntry type="library" name="sqlite-jdbc-3.36.0.1" level="application" />
     <orderEntry type="library" name="gson-2.8.2" level="application" />
     <orderEntry type="library" name="excel 2018" level="application" />
     <orderEntry type="library" name="fontawesomefx-8.9" level="application" />
     <orderEntry type="library" name="jfoenix-8.0.8" level="application" />
     <orderEntry type="library" name="AnimateFX-1.2.0" level="application" />
+    <orderEntry type="library" scope="RUNTIME" name="mariadb-java-client-2.6.0" level="application" />
   </component>
 </module>

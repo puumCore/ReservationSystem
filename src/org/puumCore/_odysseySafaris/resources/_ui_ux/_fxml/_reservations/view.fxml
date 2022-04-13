@@ -11,71 +11,81 @@
 <?import javafx.scene.layout.StackPane?>
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="1303.0" stylesheets="@../../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller._reservations.ViewCtrl">
-   <children>
-      <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
-         <effect>
-            <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
-         </effect>
-         <children>
-            <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
-               <children>
-                  <JFXTextField fx:id="searchTF1" focusColor="#405aa800" onAction="#find" prefHeight="47.0" prefWidth="311.0" promptText="Type something unique" styleClass="search_text" unFocusColor="#4d4d4d00">
-                     <padding>
-                        <Insets left="40.0" right="20.0" />
-                     </padding>
-                  </JFXTextField>
-                  <OctIconView fill="#a0a0a0" glyphName="SEARCH" size="17">
-                     <StackPane.margin>
-                        <Insets right="260.0" />
-                     </StackPane.margin>
-                  </OctIconView>
-               </children>
-            </StackPane>
-         </children>
-      </AnchorPane>
-      <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1270.0">
-         <content>
-            <JFXTreeTableView fx:id="treeTable" prefHeight="474.0" prefWidth="1783.0" stylesheets="@../../_css/table_style.css">
-               <columns>
-                  <TreeTableColumn fx:id="idCol" prefWidth="40.0" text="ID" />
-                  <TreeTableColumn fx:id="clientCol" prefWidth="325.0" text="Column X">
-                     <columns>
-                        <TreeTableColumn fx:id="clientNameCol" prefWidth="150.0" text="Column X" />
-                        <TreeTableColumn fx:id="clientPhoneCol" prefWidth="150.0" text="Column X" />
-                        <TreeTableColumn fx:id="clientEmailCol" prefWidth="150.0" text="Column X" />
-                     </columns>
-                  </TreeTableColumn>
-                  <TreeTableColumn fx:id="statusCol" prefWidth="90.0" text="Status" />
-                  <TreeTableColumn fx:id="approverCol" prefWidth="168.0" text="Approver">
-                     <columns>
-                        <TreeTableColumn fx:id="approverNameCol" prefWidth="150.0" text="Name" />
-                        <TreeTableColumn fx:id="approverPhoneCol" prefWidth="120.0" text="Phone" />
-                     </columns>
-                  </TreeTableColumn>
-                  <TreeTableColumn fx:id="paymentInfoCol" text="Payment" />
-                  <TreeTableColumn fx:id="headCountCol" prefWidth="234.0" text="Head Count">
-                     <columns>
-                        <TreeTableColumn fx:id="adultsCol" prefWidth="40.0" text="18 +" />
-                        <TreeTableColumn fx:id="childrenCol" prefWidth="40.0" text=" 18 -" />
-                        <TreeTableColumn fx:id="resCol" prefWidth="40.0" text="Res" />
-                        <TreeTableColumn fx:id="nonResCol" prefWidth="72.0" text="Non- Res" />
-                     </columns>
-                  </TreeTableColumn>
-                  <TreeTableColumn fx:id="roomTypesCol" prefWidth="90.0" text="Room types">
-                     <columns>
-                        <TreeTableColumn fx:id="singlesCol" prefWidth="70.0" text="Singles" />
-                        <TreeTableColumn fx:id="doublesCol" prefWidth="70.0" text="Doubles" />
-                        <TreeTableColumn fx:id="tripplesCol" prefWidth="70.0" text="Tripples" />
-                     </columns>
-                  </TreeTableColumn>
-                  <TreeTableColumn fx:id="unitsCol" prefWidth="62.0" text="Units" />
-                  <TreeTableColumn fx:id="mealPlanCol" prefWidth="90.0" text="Meal Plan" />
-                  <TreeTableColumn fx:id="remarksCol" minWidth="0.0" prefWidth="142.0" text="Remarks" />
-                  <TreeTableColumn fx:id="updateCol" minWidth="0.0" prefWidth="67.0" text="Update" />
-                  <TreeTableColumn fx:id="downloadCol" prefWidth="88.0" text="Download" />
-               </columns>
-            </JFXTreeTableView>
-         </content>
-      </ScrollPane>
-   </children>
+    <children>
+        <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
+            <effect>
+                <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
+            </effect>
+            <children>
+                <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
+                    <children>
+                        <JFXTextField fx:id="searchTF" focusColor="#405aa800" onAction="#find" prefHeight="47.0" prefWidth="311.0" promptText="Type something unique" styleClass="search_text" unFocusColor="#4d4d4d00">
+                            <padding>
+                                <Insets left="40.0" right="20.0" />
+                            </padding>
+                        </JFXTextField>
+                        <OctIconView fill="#a0a0a0" glyphName="SEARCH" size="17">
+                            <StackPane.margin>
+                                <Insets right="260.0" />
+                            </StackPane.margin>
+                        </OctIconView>
+                    </children>
+                </StackPane>
+            </children>
+        </AnchorPane>
+        <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="1284.0">
+            <content>
+                <JFXTreeTableView fx:id="treeTable" prefHeight="474.0" prefWidth="2365.0" stylesheets="@../../_css/table_style.css">
+                    <columns>
+                        <TreeTableColumn fx:id="voucherIdCol" prefWidth="40.0" text="ID" />
+                        <TreeTableColumn prefWidth="325.0" text="Hotel">
+                            <columns>
+                                <TreeTableColumn fx:id="hotelNameCol" prefWidth="150.0" text="Name" />
+                                <TreeTableColumn fx:id="hotelBranchCol" prefWidth="150.0" text="Branch" />
+                            </columns>
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="statusCol" prefWidth="90.0" text="Status" />
+                        <TreeTableColumn fx:id="paymentInfoCol" prefWidth="90.0" text="Payment" />
+                        <TreeTableColumn prefWidth="269.0" text="Head Count">
+                            <columns>
+                                <TreeTableColumn fx:id="adultsCol" prefWidth="50.0" text="+18" />
+                                <TreeTableColumn fx:id="childrenCol" prefWidth="50.0" text=" -18" />
+                                <TreeTableColumn fx:id="infantCol" prefWidth="70.0" text="Infant" />
+                                <TreeTableColumn fx:id="resCol" prefWidth="50.0" text="Res" />
+                                <TreeTableColumn fx:id="nonResCol" prefWidth="90.0" text="Non- Res" />
+                            </columns>
+                        </TreeTableColumn>
+                        <TreeTableColumn prefWidth="173.0" text="Room types">
+                            <columns>
+                                <TreeTableColumn fx:id="singlesCol" prefWidth="75.0" text="Singles" />
+                                <TreeTableColumn fx:id="doublesCol" prefWidth="85.0" text="Doubles" />
+                                <TreeTableColumn fx:id="triplesCol" prefWidth="85.0" text="Tripples" />
+                            </columns>
+                        </TreeTableColumn>
+                        <TreeTableColumn prefWidth="62.0" text="Units">
+                            <columns>
+                                <TreeTableColumn fx:id="arrivalCol" prefWidth="150.0" text="Arrival" />
+                                <TreeTableColumn fx:id="departureCol" prefWidth="150.0" text="Departure" />
+                                <TreeTableColumn fx:id="daysCol" prefWidth="50.0" text="Day" />
+                                <TreeTableColumn fx:id="nightsCol" prefWidth="70.0" text="Nights" />
+                            </columns>
+                        </TreeTableColumn>
+                        <TreeTableColumn prefWidth="120.0" text="Meal Plan">
+                            <columns>
+                                <TreeTableColumn fx:id="bbCol" prefWidth="50.0" text="B/B" />
+                                <TreeTableColumn fx:id="hbCol" prefWidth="50.0" text="H/B" />
+                                <TreeTableColumn fx:id="fbCol" prefWidth="50.0" text="F/B" />
+                                <TreeTableColumn fx:id="lunchCol" prefWidth="70.0" text="Lunch" />
+                        <TreeTableColumn fx:id="dinnerCol" prefWidth="70.0" text="Dinner" />
+                                <TreeTableColumn prefWidth="55.0" text="Xtra" fx:id="xtraCol" />
+                            </columns>
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="remarksCol" minWidth="0.0" prefWidth="120.0" text="Remarks" />
+                        <TreeTableColumn fx:id="updateCol" minWidth="0.0" text="Update" />
+                        <TreeTableColumn fx:id="downloadCol" prefWidth="100.0" text="Download" />
+                    </columns>
+                </JFXTreeTableView>
+            </content>
+        </ScrollPane>
+    </children>
 </AnchorPane>

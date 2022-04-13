@@ -10,34 +10,34 @@
 <?import javafx.scene.layout.StackPane?>
 
 <AnchorPane prefHeight="604.0" prefWidth="795.0" stylesheets="@../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller.LogsView">
-   <children>
-      <AnchorPane prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
-         <effect>
-            <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
-         </effect>
-         <children>
-            <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
-               <children>
-                  <JFXTextField fx:id="searchTF" focusColor="#405aa800" onAction="#find" prefHeight="47.0" prefWidth="311.0" promptText="Type something unique" styleClass="search_text" unFocusColor="#4d4d4d00">
-                     <padding>
-                        <Insets left="40.0" right="20.0" />
-                     </padding>
-                  </JFXTextField>
-                  <OctIconView fill="#a0a0a0" glyphName="SEARCH" size="17">
-                     <StackPane.margin>
-                        <Insets right="260.0" />
-                     </StackPane.margin>
-                  </OctIconView>
-               </children>
-            </StackPane>
-         </children>
-      </AnchorPane>
-      <JFXTreeTableView fx:id="treeTable" layoutY="102.0" prefHeight="502.0" prefWidth="783.0" stylesheets="@../_css/table_style.css">
-         <columns>
-            <TreeTableColumn fx:id="timestampCol" prefWidth="160.00003051757812" text="Timestamp" />
-            <TreeTableColumn fx:id="voucherIdCol" prefWidth="89.0" text="Voucher ID" />
-            <TreeTableColumn fx:id="infoCol" prefWidth="524.0" text="Info" />
-         </columns>
-      </JFXTreeTableView>
-   </children>
+    <children>
+        <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
+            <effect>
+                <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
+            </effect>
+            <children>
+                <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
+                    <children>
+                        <JFXTextField fx:id="searchTF" focusColor="#405aa800" onAction="#find" prefHeight="47.0" prefWidth="311.0" promptText="Type something unique" styleClass="search_text" unFocusColor="#4d4d4d00">
+                            <padding>
+                                <Insets left="40.0" right="20.0" />
+                            </padding>
+                        </JFXTextField>
+                        <OctIconView fill="#a0a0a0" glyphName="SEARCH" size="17">
+                            <StackPane.margin>
+                                <Insets right="260.0" />
+                            </StackPane.margin>
+                        </OctIconView>
+                    </children>
+                </StackPane>
+            </children>
+        </AnchorPane>
+        <JFXTreeTableView fx:id="treeTable" layoutX="18.0" layoutY="99.0" prefHeight="504.0" prefWidth="783.0" stylesheets="@../_css/table_style.css">
+            <columns>
+                <TreeTableColumn fx:id="timestampCol" prefWidth="160.00003051757812" text="Timestamp" />
+                <TreeTableColumn fx:id="voucherIdCol" prefWidth="84.0" text="Voucher" />
+                <TreeTableColumn fx:id="infoCol" prefWidth="511.0" text="Info" />
+            </columns>
+        </JFXTreeTableView>
+    </children>
 </AnchorPane>

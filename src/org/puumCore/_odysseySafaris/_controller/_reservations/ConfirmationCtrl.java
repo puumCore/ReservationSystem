@@ -1,4 +1,4 @@
-package org.puumCore._odysseySafaris._controller;
+package org.puumCore._odysseySafaris._controller._reservations;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;

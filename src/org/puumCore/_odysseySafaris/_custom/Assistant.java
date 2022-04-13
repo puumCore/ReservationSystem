@@ -13,6 +13,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -22,12 +23,15 @@ import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * @author Puum Core (Mandela Muriithi)<br>
@@ -38,10 +42,28 @@ import java.util.stream.Collectors;
 
 public abstract class Assistant extends WatchDog {
 
-    protected static final long ATTACHMENT_FILE_MAX_SIZE_IN_BYTES = 34 * 1024 * 1024;
-    private static final int YEAR_OF_BIRTH = 2020;
-    protected final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+    public enum PersonType {
+        CLIENT(), CONFIRM()
+    }
+
+    public enum VoucherStatus {
+        RESERVE("Please Reserve"), AMEND("Amend"), CANCEL("Cancel");
+
+        String status;
+
+        VoucherStatus(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+    }
+
+    private static final int YEAR_OF_BIRTH = 2022;
+    protected final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     protected final DateTimeFormatter combinedDateTimeFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss:SSS");
+    protected final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         String newText = change.getControlNewText();
         String NON_NEGATIVE_INTEGERS_ONLY = "([0-9][0-9]*)?";
@@ -69,10 +91,6 @@ public abstract class Assistant extends WatchDog {
             return super.fromString(string);
         }
     };
-
-    protected final <K> List<K> clear_null_values_from_list(K... k) {
-        return Arrays.stream(k).filter(Objects::nonNull).collect(Collectors.toList());
-    }
 
     protected final Thread load_task_into_a_thread(Task<?> task) {
         task.exceptionProperty().addListener(((observable, oldValue, newValue) -> {
@@ -104,6 +122,10 @@ public abstract class Assistant extends WatchDog {
                 ((JFXTextField) node).clear();
             } else if (node instanceof JFXPasswordField) {
                 ((JFXPasswordField) node).clear();
+            } else if (node instanceof JFXDatePicker) {
+                ((JFXDatePicker) node).getEditor().clear();
+            } else if (node instanceof JFXTimePicker) {
+                ((JFXTimePicker) node).getEditor().clear();
             }
         });
     }
@@ -136,7 +158,7 @@ public abstract class Assistant extends WatchDog {
                 @Override
                 public String toString(LocalDate date) {
                     if (date != null) {
-                        return dateTimeFormatter.format(date);
+                        return dateFormatter.format(date);
                     } else {
                         return "";
                     }
@@ -145,13 +167,38 @@ public abstract class Assistant extends WatchDog {
                 @Override
                 public LocalDate fromString(String string) {
                     if (string != null && !string.isEmpty()) {
-                        return LocalDate.parse(string, dateTimeFormatter);
+                        return LocalDate.parse(string, dateFormatter);
                     } else {
                         return null;
                     }
                 }
             };
             jfxDatePicker.setConverter(converter);
+        }
+    }
+
+    protected final void set_my_preferred_time_format(JFXTimePicker... jfxTimePickers) {
+        for (JFXTimePicker jfxTimePicker : jfxTimePickers) {
+            StringConverter<LocalTime> converter = new StringConverter<LocalTime>() {
+                @Override
+                public String toString(LocalTime time) {
+                    if (time != null) {
+                        return timeFormatter.format(time);
+                    } else {
+                        return "";
+                    }
+                }
+
+                @Override
+                public LocalTime fromString(String string) {
+                    if (string != null && !string.isEmpty()) {
+                        return LocalTime.parse(string, timeFormatter);
+                    } else {
+                        return null;
+                    }
+                }
+            };
+            jfxTimePicker.setConverter(converter);
         }
     }
 
@@ -181,22 +228,23 @@ public abstract class Assistant extends WatchDog {
         }));
     }
 
-    protected final void validation_status_on_email_type(JFXTextField jfxTextField) {
-        jfxTextField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            if (email_is_in_correct_format(newValue)) {
-                Platform.runLater(() -> jfxTextField.setStyle("-fx-background-radius: 7px;\n -fx-text-fill: #1D1A1A;"));
+    protected final void validation_of_time(JFXDatePicker jfxDatePicker) {
+        TextField textField = jfxDatePicker.getEditor();
+        textField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            if (the_time_is_the_correct_format(newValue)) {
+                Platform.runLater(() -> textField.setStyle("-fx-background-radius: 7px;\n -fx-text-fill: #1D1A1A;"));
             } else {
-                Platform.runLater(() -> jfxTextField.setStyle("-fx-background-radius: 7px;\n -fx-text-fill: rgb(241, 58, 58);"));
+                Platform.runLater(() -> textField.setStyle("-fx-background-radius: 7px;\n -fx-text-fill: rgb(241, 58, 58);"));
             }
         }));
     }
 
-    protected final boolean the_param_is_an_email(String param) {
-        return email_is_in_correct_format(param);
-    }
-
     protected final boolean the_date_is_the_correct_format(String param) {
         return Pattern.matches("[0-9]{1,2}-[a-zA-Z]{3,4}-[0-9]{4}", param);
+    }
+
+    protected final boolean the_time_is_the_correct_format(String param) {
+        return Pattern.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", param);
     }
 
     protected final boolean phoneNumber_is_in_correct_format(String param) {
@@ -204,10 +252,6 @@ public abstract class Assistant extends WatchDog {
                 Pattern.matches("^(\\d{3}[- .]?){2}\\d{4}$", param) ||
                 Pattern.matches("^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", param) ||
                 Pattern.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", param);
-    }
-
-    protected final boolean email_is_in_correct_format(String param) {
-        return Pattern.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", param);
     }
 
     protected final boolean is_a_number(String param) {
@@ -226,12 +270,6 @@ public abstract class Assistant extends WatchDog {
                 Platform.runLater(() -> programmer_error(e).showAndWait());
             }
         });
-    }
-
-    protected final void fading_animation(Node outgoing, Node incoming) {
-        new FadeOut(outgoing).play();
-        incoming.toFront();
-        new FadeIn(incoming).setDelay(Duration.seconds(0.6)).play();
     }
 
     protected final StackPane get_parent_for_popup_dialogue(Node node, String parentName) {
