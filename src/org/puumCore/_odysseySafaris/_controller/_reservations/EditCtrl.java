@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ToggleGroup;
-import org.puumCore._odysseySafaris._custom.Assistant;
 import org.puumCore._odysseySafaris._custom.Brain;
 import org.puumCore._odysseySafaris._models._object.Voucher;
 
@@ -123,7 +122,15 @@ public class EditCtrl extends Brain implements Initializable {
 
     @FXML
     void reset(ActionEvent event) {
-
+        clear_textFields(hotelNameTF, branchTF, nameTF, phoneTF, adultsTF, childrenTF, infantsTF, resTF, arrivalDP, arrivalTP, departureDP, departureTP, daysTF, nightsTF);
+        for (JFXRadioButton jfxRadioButton : new JFXRadioButton[]{singlesRB, doublesRB, bbRB, hbRB, fbRB, lunchRB, dinnerRB, xtraDirectRB}) {
+            if (jfxRadioButton.isSelected()) {
+                jfxRadioButton.setSelected(false);
+            }
+        }
+        status.getSelectedToggle().setSelected(false);
+        payment.getSelectedToggle().setSelected(false);
+        event.consume();
     }
 
     @FXML
@@ -134,7 +141,12 @@ public class EditCtrl extends Brain implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        accept_only_numbers(adultsTF, childrenTF, infantsTF, resTF);
+        accept_only_numbers(adultsTF, childrenTF, infantsTF, resTF, daysTF, nightsTF);
+
+        validation_of_phoneNumber(phoneTF);
+
+        set_my_preferred_date_format(departureDP, arrivalDP);
+        set_my_preferred_time_format(departureTP, arrivalTP);
 
         this.myVoucher = EditCtrl.voucher;
     }

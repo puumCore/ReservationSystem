@@ -1,7 +1,10 @@
 package org.puumCore._odysseySafaris._models._table;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
 
 /**
@@ -13,24 +16,24 @@ import javafx.scene.control.Alert;
 
 public class Reservations extends RecursiveTreeObject<Reservations> {
 
-    private final IntegerProperty id;
+    private final ObjectProperty<Integer> id;
     private final StringProperty status;
     private final StringProperty hotelName;
     private final StringProperty hotelBranch;
     private final StringProperty clientName;
     private final StringProperty clientPhone;
-    private final IntegerProperty adults;
-    private final IntegerProperty children;
-    private final IntegerProperty infants;
-    private final IntegerProperty reservations;
-    private final IntegerProperty nonReservations;
+    private final ObjectProperty<Integer> adults;
+    private final ObjectProperty<Integer> children;
+    private final ObjectProperty<Integer> infants;
+    private final ObjectProperty<Integer> reservations;
+    private final ObjectProperty<Integer> nonReservations;
     private final StringProperty singles;
     private final StringProperty doubles;
     private final StringProperty triples;
     private final StringProperty arrival;
     private final StringProperty departure;
-    private final IntegerProperty days;
-    private final IntegerProperty nights;
+    private final ObjectProperty<Integer> days;
+    private final ObjectProperty<Integer> nights;
     private final StringProperty b_b;
     private final StringProperty h_b;
     private final StringProperty f_b;
@@ -41,24 +44,24 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
     private final StringProperty paid_by;
 
     public Reservations(Integer id, String status, String hotelName, String hotelBranch, String clientName, String clientPhone, Integer adults, Integer children, Integer infants, Integer reservations, Integer nonReservations, String singles, String doubles, String triples, String arrival, String departure, Integer days, Integer nights, String b_b, String h_b, String f_b, String lunch, String dinner, String xtra_direct, Alert remarksDisplay, String paid_by) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = new SimpleObjectProperty<>(id);
         this.status = new SimpleStringProperty(status);
         this.hotelName = new SimpleStringProperty(hotelName);
         this.hotelBranch = new SimpleStringProperty(hotelBranch);
         this.clientName = new SimpleStringProperty(clientName);
         this.clientPhone = new SimpleStringProperty(clientPhone);
-        this.adults = new SimpleIntegerProperty(adults);
-        this.children = new SimpleIntegerProperty(children);
-        this.infants = new SimpleIntegerProperty(infants);
-        this.reservations = new SimpleIntegerProperty(reservations);
-        this.nonReservations = new SimpleIntegerProperty(nonReservations);
+        this.adults = new SimpleObjectProperty<>(adults);
+        this.children = new SimpleObjectProperty<>(children);
+        this.infants = new SimpleObjectProperty<>(infants);
+        this.reservations = new SimpleObjectProperty<>(reservations);
+        this.nonReservations = new SimpleObjectProperty<>(nonReservations);
         this.singles = new SimpleStringProperty(singles);
         this.doubles = new SimpleStringProperty(doubles);
         this.triples = new SimpleStringProperty(triples);
         this.arrival = new SimpleStringProperty(arrival);
         this.departure = new SimpleStringProperty(departure);
-        this.days = new SimpleIntegerProperty(days);
-        this.nights = new SimpleIntegerProperty(nights);
+        this.days = new SimpleObjectProperty<>(days);
+        this.nights = new SimpleObjectProperty<>(nights);
         this.b_b = new SimpleStringProperty(b_b);
         this.h_b = new SimpleStringProperty(h_b);
         this.f_b = new SimpleStringProperty(f_b);
@@ -73,7 +76,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return id.get();
     }
 
-    public IntegerProperty idProperty() {
+    public ObjectProperty<Integer> idProperty() {
         return id;
     }
 
@@ -145,7 +148,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return adults.get();
     }
 
-    public IntegerProperty adultsProperty() {
+    public ObjectProperty<Integer> adultsProperty() {
         return adults;
     }
 
@@ -153,7 +156,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         this.adults.set(adults);
     }
 
-    public IntegerProperty childrenProperty() {
+    public ObjectProperty<Integer> childrenProperty() {
         return children;
     }
 
@@ -165,7 +168,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return infants.get();
     }
 
-    public IntegerProperty infantsProperty() {
+    public ObjectProperty<Integer> infantsProperty() {
         return infants;
     }
 
@@ -177,7 +180,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return reservations.get();
     }
 
-    public IntegerProperty reservationsProperty() {
+    public ObjectProperty<Integer> reservationsProperty() {
         return reservations;
     }
 
@@ -189,7 +192,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return nonReservations.get();
     }
 
-    public IntegerProperty nonReservationsProperty() {
+    public ObjectProperty<Integer> nonReservationsProperty() {
         return nonReservations;
     }
 
@@ -261,7 +264,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return days.get();
     }
 
-    public IntegerProperty daysProperty() {
+    public ObjectProperty<Integer> daysProperty() {
         return days;
     }
 
@@ -273,7 +276,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return nights.get();
     }
 
-    public IntegerProperty nightsProperty() {
+    public ObjectProperty<Integer> nightsProperty() {
         return nights;
     }
 

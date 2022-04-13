@@ -188,9 +188,7 @@ public abstract class Brain extends Assistant {
                     "\tr.status ,\n" +
                     "\tr.client_name ,\n" +
                     "\tr.client_phone ,\n" +
-                    "\tr.remarks ,\n" +
-                    "\tr.confirm_person_name ,\n" +
-                    "\tr.confirm_person_phone ,\n" +
+                    "\tr.remarks,\n" +
                     "\tr.paid_by\n" +
                     "from\n" +
                     "\treservations r;");
