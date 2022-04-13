@@ -33,53 +33,33 @@
                 </StackPane>
             </children>
         </AnchorPane>
-        <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="1284.0">
+        <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="1267.0">
             <content>
                 <JFXTreeTableView fx:id="treeTable" prefHeight="474.0" prefWidth="2365.0" stylesheets="@../../_css/table_style.css">
                     <columns>
                         <TreeTableColumn fx:id="voucherIdCol" prefWidth="40.0" text="ID" />
-                        <TreeTableColumn prefWidth="325.0" text="Hotel">
-                            <columns>
-                                <TreeTableColumn fx:id="hotelNameCol" prefWidth="150.0" text="Name" />
-                                <TreeTableColumn fx:id="hotelBranchCol" prefWidth="150.0" text="Branch" />
-                            </columns>
-                        </TreeTableColumn>
+                          <TreeTableColumn fx:id="hotelNameCol" prefWidth="150.0" text="Hotel Name" />
+                          <TreeTableColumn fx:id="hotelBranchCol" prefWidth="150.0" text="Branch" />
                         <TreeTableColumn fx:id="statusCol" prefWidth="90.0" text="Status" />
                         <TreeTableColumn fx:id="paymentInfoCol" prefWidth="90.0" text="Payment" />
-                        <TreeTableColumn prefWidth="269.0" text="Head Count">
-                            <columns>
-                                <TreeTableColumn fx:id="adultsCol" prefWidth="50.0" text="+18" />
-                                <TreeTableColumn fx:id="childrenCol" prefWidth="50.0" text=" -18" />
-                                <TreeTableColumn fx:id="infantCol" prefWidth="70.0" text="Infant" />
-                                <TreeTableColumn fx:id="resCol" prefWidth="50.0" text="Res" />
-                                <TreeTableColumn fx:id="nonResCol" prefWidth="90.0" text="Non- Res" />
-                            </columns>
-                        </TreeTableColumn>
-                        <TreeTableColumn prefWidth="173.0" text="Room types">
-                            <columns>
-                                <TreeTableColumn fx:id="singlesCol" prefWidth="75.0" text="Singles" />
-                                <TreeTableColumn fx:id="doublesCol" prefWidth="85.0" text="Doubles" />
-                                <TreeTableColumn fx:id="triplesCol" prefWidth="85.0" text="Tripples" />
-                            </columns>
-                        </TreeTableColumn>
-                        <TreeTableColumn prefWidth="62.0" text="Units">
-                            <columns>
-                                <TreeTableColumn fx:id="arrivalCol" prefWidth="150.0" text="Arrival" />
-                                <TreeTableColumn fx:id="departureCol" prefWidth="150.0" text="Departure" />
-                                <TreeTableColumn fx:id="daysCol" prefWidth="50.0" text="Day" />
-                                <TreeTableColumn fx:id="nightsCol" prefWidth="70.0" text="Nights" />
-                            </columns>
-                        </TreeTableColumn>
-                        <TreeTableColumn prefWidth="120.0" text="Meal Plan">
-                            <columns>
-                                <TreeTableColumn fx:id="bbCol" prefWidth="50.0" text="B/B" />
-                                <TreeTableColumn fx:id="hbCol" prefWidth="50.0" text="H/B" />
-                                <TreeTableColumn fx:id="fbCol" prefWidth="50.0" text="F/B" />
-                                <TreeTableColumn fx:id="lunchCol" prefWidth="70.0" text="Lunch" />
-                        <TreeTableColumn fx:id="dinnerCol" prefWidth="70.0" text="Dinner" />
-                                <TreeTableColumn prefWidth="55.0" text="Xtra" fx:id="xtraCol" />
-                            </columns>
-                        </TreeTableColumn>
+                          <TreeTableColumn fx:id="adultsCol" prefWidth="50.0" text="+18" />
+                          <TreeTableColumn fx:id="childrenCol" prefWidth="50.0" text=" -18" />
+                          <TreeTableColumn fx:id="infantCol" prefWidth="70.0" text="Infant" />
+                          <TreeTableColumn fx:id="resCol" prefWidth="50.0" text="Res" />
+                          <TreeTableColumn fx:id="nonResCol" prefWidth="90.0" text="Non- Res" />
+                          <TreeTableColumn fx:id="singlesCol" prefWidth="75.0" text="Singles" />
+                          <TreeTableColumn fx:id="doublesCol" prefWidth="85.0" text="Doubles" />
+                          <TreeTableColumn fx:id="triplesCol" prefWidth="85.0" text="Tripples" />
+                          <TreeTableColumn fx:id="arrivalCol" prefWidth="150.0" text="Arrival" />
+                          <TreeTableColumn fx:id="departureCol" prefWidth="150.0" text="Departure" />
+                          <TreeTableColumn fx:id="daysCol" prefWidth="50.0" text="Day" />
+                          <TreeTableColumn fx:id="nightsCol" prefWidth="70.0" text="Nights" />
+                          <TreeTableColumn fx:id="bbCol" prefWidth="50.0" text="B/B" />
+                          <TreeTableColumn fx:id="hbCol" prefWidth="50.0" text="H/B" />
+                          <TreeTableColumn fx:id="fbCol" prefWidth="50.0" text="F/B" />
+                          <TreeTableColumn fx:id="lunchCol" prefWidth="100.0" text="Lunch" />
+                  <TreeTableColumn fx:id="dinnerCol" prefWidth="100.0" text="Dinner" />
+                          <TreeTableColumn prefWidth="55.0" text="Xtra" fx:id="xtraCol" />
                         <TreeTableColumn fx:id="remarksCol" minWidth="0.0" prefWidth="120.0" text="Remarks" />
                         <TreeTableColumn fx:id="updateCol" minWidth="0.0" text="Update" />
                         <TreeTableColumn fx:id="downloadCol" prefWidth="100.0" text="Download" />

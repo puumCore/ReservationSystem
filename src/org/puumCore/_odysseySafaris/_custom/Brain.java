@@ -26,8 +26,6 @@ public abstract class Brain extends Assistant {
     protected final String ALL_WILDCARD = "#all";
 
 
-
-
     protected final Voucher get_full_voucher_with_its_ID(Integer voucherID) {
         if (Main.DATA_SOURCE_CONNECTION == null) {
             return null;
@@ -195,7 +193,7 @@ public abstract class Brain extends Assistant {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.isBeforeFirst()) {
                 while (resultSet.next()) {
-                    for (String result : new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9)}) {
+                    for (String result : new String[]{resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7)}) {
                         if (result != null) {
                             stringSet.add(result);
                         }
@@ -411,4 +409,5 @@ public abstract class Brain extends Assistant {
         }
         return isOkay;
     }
+
 }
