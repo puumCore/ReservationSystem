@@ -1,18 +1,16 @@
 package org.puumCore._odysseySafaris._custom;
 
 import javafx.application.Platform;
-import org.apache.poi.ss.formula.functions.T;
 import org.puumCore._odysseySafaris.Main;
 import org.puumCore._odysseySafaris._models._object.*;
+import org.puumCore._odysseySafaris._models._table.LogsInfo;
 import org.puumCore._odysseySafaris._models._table.Reservations;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Savepoint;
+import java.util.*;
 
 /**
  * @author Puum Core (Mandela Muriithi)<br>
@@ -24,6 +22,290 @@ import java.util.Set;
 public abstract class Brain extends Assistant {
 
     protected final String ALL_WILDCARD = "#all";
+
+    protected final List<LogsInfo> get_logs_based_on_param(String param) {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return null;
+        }
+        List<LogsInfo> logsInfoList = new ArrayList<>();
+        final String rootQuery = "select\n" +
+                "\tl.`timestamp` ,\n" +
+                "\tl.voucherId ,\n" +
+                "\tl.info\n" +
+                "from\n" +
+                "\tlogs l";
+        try {
+            PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement((param == null) ? rootQuery.concat(";") : rootQuery.concat("\n" +
+                    "where\n" +
+                    "\t(l.info like ?);"));
+            if (param != null) {
+                preparedStatement.setString(1, "%" + param + "%");
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    logsInfoList.add(new LogsInfo(resultSet.getString(1), resultSet.getInt(2), resultSet.getString(3)));
+                }
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return logsInfoList;
+    }
+
+    protected final Set<String> get_log_search_suggestions() {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return null;
+        }
+        Set<String> stringSet = new HashSet<>();
+        try {
+            PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("select\n" +
+                    "\tl.info\n" +
+                    "from\n" +
+                    "\tlogs l;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    String[] split = resultSet.getString(1).split(" ");
+                    stringSet.addAll(Arrays.asList(split));
+                }
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return stringSet;
+    }
+
+    protected final Boolean update_voucher_confirmation(Integer voucherId, Person confirmPerson) {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return null;
+        }
+        boolean isOkay = false;
+        try {
+            Savepoint savepoint = Main.DATA_SOURCE_CONNECTION.setSavepoint();
+            PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("insert\n" +
+                    "\tinto\n" +
+                    "\tconfirmation (name,\n" +
+                    "\tphone)\n" +
+                    "where\n" +
+                    "values (?,\n" +
+                    "?);", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, confirmPerson.getName());
+            preparedStatement.setString(2, confirmPerson.getPhone());
+            int count = preparedStatement.executeUpdate();
+            if (count == 1) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys != null && generatedKeys.next()) {
+                    confirmPerson.setId(generatedKeys.getInt(1));
+                    preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                            "\tvoucher\n" +
+                            "set\n" +
+                            "\tconfirmId = ?\n" +
+                            "where\n" +
+                            "\tvoucherId = ?;");
+                    preparedStatement.setInt(1, confirmPerson.getId());
+                    preparedStatement.setInt(2, voucherId);
+                    isOkay = (preparedStatement.executeUpdate() == 1);
+                    if (!isOkay) {
+                        Main.DATA_SOURCE_CONNECTION.rollback(savepoint);
+                    }
+                }
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return isOkay;
+    }
+
+    protected final Boolean update_voucher(Voucher voucher) {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return null;
+        }
+        boolean isOkay = false;
+        try {
+            PreparedStatement preparedStatement;
+            if (voucher.getHotel() != null) {
+                preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                        "\thotel\n" +
+                        "set\n" +
+                        "\tbranch = coalesce (?,\n" +
+                        "\tbranch)\n" +
+                        "where\n" +
+                        "\thotelId = ?;");
+                preparedStatement.setString(1, voucher.getHotel().getBranch());
+                preparedStatement.setInt(2, voucher.getHotel().getId());
+                isOkay = (preparedStatement.executeUpdate() == 1);
+                if (!isOkay) {
+                    preparedStatement.close();
+                    create_log(voucher.getId(), new Log("Hotel update", "Could not update hotel info"));
+                    return false;
+                }
+                create_log(voucher.getId(), new Log("Hotel update", "Updated hotel info"));
+            }
+            if (voucher.getHeadCount() != null) {
+                preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                        "\thead_count\n" +
+                        "set\n" +
+                        "\tadults = coalesce(?, adults),\n" +
+                        "\tchildren = coalesce(?, children),\n" +
+                        "\tinfants = coalesce(?, infants),\n" +
+                        "\treservations = coalesce(?, reservations)\n" +
+                        "\twhere countId = ?;");
+                preparedStatement.setInt(1, voucher.getHeadCount().getAdults());
+                preparedStatement.setInt(2, voucher.getHeadCount().getChildren());
+                preparedStatement.setInt(3, voucher.getHeadCount().getInfants());
+                preparedStatement.setInt(4, voucher.getHeadCount().getRes());
+                preparedStatement.setInt(5, voucher.getHeadCount().getId());
+                isOkay = (preparedStatement.executeUpdate() == 1);
+                if (!isOkay) {
+                    preparedStatement.close();
+                    create_log(voucher.getId(), new Log("Head count update", "Could not update head count info"));
+                    return false;
+                }
+                create_log(voucher.getId(), new Log("Head count update", "Updated head count info"));
+            }
+            if (voucher.getTimeLine() != null) {
+                preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                        "\ttime_line\n" +
+                        "set\n" +
+                        "\tarrival = coalesce (?,\n" +
+                        "\tarrival),\n" +
+                        "\tdeparture = coalesce (?,\n" +
+                        "\tdeparture),\n" +
+                        "\tdays = coalesce (?,\n" +
+                        "\tdays),\n" +
+                        "\tnights = coalesce (?,\n" +
+                        "\tnights)\n" +
+                        "where\n" +
+                        "\tunitId = ?;");
+                preparedStatement.setString(1, voucher.getTimeLine().getArrival());
+                preparedStatement.setString(2, voucher.getTimeLine().getDeparture());
+                preparedStatement.setInt(3, voucher.getTimeLine().getDays());
+                preparedStatement.setInt(4, voucher.getTimeLine().getNights());
+                preparedStatement.setInt(5, voucher.getTimeLine().getId());
+                isOkay = (preparedStatement.executeUpdate() == 1);
+                if (!isOkay) {
+                    preparedStatement.close();
+                    create_log(voucher.getId(), new Log("Time line update", "Could not update time line info"));
+                    return false;
+                }
+                create_log(voucher.getId(), new Log("Time line update", "Updated time line info"));
+            }
+            if (voucher.getRoomType() != null) {
+                preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                        "\troom_type\n" +
+                        "set\n" +
+                        "\tsingles = coalesce (?,\n" +
+                        "\tsingles),\n" +
+                        "\tdoubles = coalesce (?,\n" +
+                        "\tdoubles),\n" +
+                        "\ttripplets = coalesce (?,\n" +
+                        "\ttripplets)\n" +
+                        "where\n" +
+                        "\troomId = ?;");
+                preparedStatement.setBoolean(1, voucher.getRoomType().getSingles());
+                preparedStatement.setBoolean(2, voucher.getRoomType().getDoubles());
+                preparedStatement.setBoolean(3, voucher.getRoomType().getTriples());
+                preparedStatement.setInt(5, voucher.getRoomType().getId());
+                isOkay = (preparedStatement.executeUpdate() == 1);
+                if (!isOkay) {
+                    preparedStatement.close();
+                    return false;
+                }
+            }
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("update\n" +
+                    "\tvoucher\n" +
+                    "set\n" +
+                    "\tSTATUS = coalesce (?,\n" +
+                    "\tSTATUS),\n" +
+                    "\tremarks = coalesce (?,\n" +
+                    "\tremarks),\n" +
+                    "\tpaid_by = coalesce (?,\n" +
+                    "\tpaid_by)\n" +
+                    "where\n" +
+                    "\tvoucherId = ?;");
+            preparedStatement.setString(1, voucher.getStatus());
+            preparedStatement.setString(2, voucher.getRemarks());
+            preparedStatement.setString(3, voucher.getPaidBy());
+            preparedStatement.setInt(5, voucher.getId());
+            isOkay = (preparedStatement.executeUpdate() == 1);
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return isOkay;
+    }
+
+    protected final Boolean delete_voucher_data(Voucher voucher) {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return null;
+        }
+        boolean isOkay = false;
+        try {
+            PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from hotel where hotelId = ?;");
+            preparedStatement.setInt(1, voucher.getHotel().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from client where clientId = ?;");
+            preparedStatement.setInt(1, voucher.getClient().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from head_count where countId = ?;");
+            preparedStatement.setInt(1, voucher.getHeadCount().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from room_type where roomId = ?;");
+            preparedStatement.setInt(1, voucher.getRoomType().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from time_line where unitId = ?;");
+            preparedStatement.setInt(1, voucher.getTimeLine().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from meal_plan where planId = ?;");
+            preparedStatement.setInt(1, voucher.getMealPlan().getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            if (voucher.getConfirmPerson() != null) {
+                preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from confirmation where confirmId = ?;");
+                preparedStatement.setInt(1, voucher.getConfirmPerson().getId());
+                preparedStatement.executeUpdate();
+                preparedStatement.clearParameters();
+            }
+
+            preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("delete from voucher where voucherId = ?;");
+            preparedStatement.setInt(1, voucher.getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.clearParameters();
+
+            preparedStatement.close();
+            isOkay = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return isOkay;
+    }
 
 
     protected final Voucher get_full_voucher_with_its_ID(Integer voucherID) {
@@ -98,7 +380,7 @@ public abstract class Brain extends Assistant {
             }
             resultSet.close();
             preparedStatement.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             new Thread(write_stack_trace(e)).start();
             Platform.runLater(() -> programmer_error(e).show());
@@ -124,12 +406,10 @@ public abstract class Brain extends Assistant {
                     "\tor (r.client_phone like ?)\n" +
                     "\tor (r.arrival like ?)\n" +
                     "\tor (r.departure like ?)\n" +
-                    "\tor (r.remarks like ?)\n" +
-                    "\tor (r.confirm_person_name like ?)\n" +
-                    "\tor (r.confirm_person_phone like ?);"));
+                    "\tor (r.remarks like ?);"));
             if (param != null) {
                 for (int index = 1; index <= 9; ++index) {
-                    preparedStatement.setString(index, param);
+                    preparedStatement.setString(index, "%" + param + "%");
                 }
             }
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -153,12 +433,6 @@ public abstract class Brain extends Assistant {
                             resultSet.getString(16),
                             resultSet.getInt(17),
                             resultSet.getInt(18),
-                            (resultSet.getBoolean(19) ? "True" : "False"),
-                            (resultSet.getBoolean(20) ? "True" : "False"),
-                            (resultSet.getBoolean(21) ? "True" : "False"),
-                            (resultSet.getBoolean(22) ? "True" : "False"),
-                            (resultSet.getBoolean(23) ? "True" : "False"),
-                            (resultSet.getBoolean(24) ? "True" : "False"),
                             get_dynamic_alert("Remarks", resultSet.getString(25)),
                             resultSet.getString(26)
                     ));
@@ -166,7 +440,7 @@ public abstract class Brain extends Assistant {
             }
             resultSet.close();
             preparedStatement.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             new Thread(write_stack_trace(e)).start();
             Platform.runLater(() -> programmer_error(e).show());
@@ -202,7 +476,7 @@ public abstract class Brain extends Assistant {
             }
             resultSet.close();
             preparedStatement.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             new Thread(write_stack_trace(e)).start();
             Platform.runLater(() -> programmer_error(e).show());
@@ -215,10 +489,10 @@ public abstract class Brain extends Assistant {
             return null;
         }
         boolean isOkay = false;
-
+        create_log(voucher.getId(), new Log("Creation Attempt", "Trying to create a new voucher"));
         try {
+            Savepoint savepoint = Main.DATA_SOURCE_CONNECTION.setSavepoint();
             //Adding new hotel
-            Main.DATA_SOURCE_CONNECTION.setSavepoint();
             PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("insert\n" +
                     "\tinto\n" +
                     "\thotel (name,\n" +
@@ -372,18 +646,7 @@ public abstract class Brain extends Assistant {
                                                                     voucher.setId(generatedKeys.getInt(1));
                                                                     generatedKeys.close();
                                                                     System.out.println("voucher = " + voucher);
-                                                                    preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("insert\n" +
-                                                                            "into\n" +
-                                                                            "\tlogs (voucherId,\n" +
-                                                                            "\t`timestamp`,\n" +
-                                                                            "\tinfo)\n" +
-                                                                            "values (?,\n" +
-                                                                            "?,\n" +
-                                                                            "?);", PreparedStatement.RETURN_GENERATED_KEYS);
-                                                                    preparedStatement.setInt(1, voucher.getId());
-                                                                    preparedStatement.setString(2, get_time_stamp());
-                                                                    preparedStatement.setString(3, "Created voucher");
-                                                                    preparedStatement.executeUpdate();
+                                                                    create_log(voucher.getId(), new Log("Created voucher", "It was successful"));
                                                                 }
                                                             }
                                                         }
@@ -399,7 +662,7 @@ public abstract class Brain extends Assistant {
                 }
                 preparedStatement.close();
                 if (!isOkay) {
-                    Main.DATA_SOURCE_CONNECTION.rollback();
+                    Main.DATA_SOURCE_CONNECTION.rollback(savepoint);
                 }
             }
         } catch (Exception e) {
@@ -408,6 +671,30 @@ public abstract class Brain extends Assistant {
             Platform.runLater(() -> programmer_error(e).show());
         }
         return isOkay;
+    }
+
+    protected final void create_log(Integer voucherId, Log log) {
+        if (Main.DATA_SOURCE_CONNECTION == null) {
+            return;
+        }
+        try {
+            PreparedStatement preparedStatement = Main.DATA_SOURCE_CONNECTION.prepareStatement("insert\n" +
+                    "into\n" +
+                    "\tlogs (voucherId,\n" +
+                    "\t`timestamp`,\n" +
+                    "\tinfo)\n" +
+                    "values (?,\n" +
+                    "?,\n" +
+                    "?);");
+            preparedStatement.setInt(1, voucherId);
+            preparedStatement.setString(2, log.getTimeStamp());
+            preparedStatement.setString(3, log.getAction().concat(": ").concat(log.getInfo()));
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+        }
     }
 
 }

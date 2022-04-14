@@ -34,16 +34,10 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
     private final StringProperty departure;
     private final ObjectProperty<Integer> days;
     private final ObjectProperty<Integer> nights;
-    private final StringProperty b_b;
-    private final StringProperty h_b;
-    private final StringProperty f_b;
-    private final StringProperty lunch;
-    private final StringProperty dinner;
-    private final StringProperty xtra_direct;
     private final ObjectProperty<Alert> remarksDisplay;
     private final StringProperty paid_by;
 
-    public Reservations(Integer id, String status, String hotelName, String hotelBranch, String clientName, String clientPhone, Integer adults, Integer children, Integer infants, Integer reservations, Integer nonReservations, String singles, String doubles, String triples, String arrival, String departure, Integer days, Integer nights, String b_b, String h_b, String f_b, String lunch, String dinner, String xtra_direct, Alert remarksDisplay, String paid_by) {
+    public Reservations(Integer id, String status, String hotelName, String hotelBranch, String clientName, String clientPhone, Integer adults, Integer children, Integer infants, Integer reservations, Integer nonReservations, String singles, String doubles, String triples, String arrival, String departure, Integer days, Integer nights, Alert remarksDisplay, String paid_by) {
         this.id = new SimpleObjectProperty<>(id);
         this.status = new SimpleStringProperty(status);
         this.hotelName = new SimpleStringProperty(hotelName);
@@ -62,26 +56,16 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         this.departure = new SimpleStringProperty(departure);
         this.days = new SimpleObjectProperty<>(days);
         this.nights = new SimpleObjectProperty<>(nights);
-        this.b_b = new SimpleStringProperty(b_b);
-        this.h_b = new SimpleStringProperty(h_b);
-        this.f_b = new SimpleStringProperty(f_b);
-        this.lunch = new SimpleStringProperty(lunch);
-        this.dinner = new SimpleStringProperty(dinner);
-        this.xtra_direct = new SimpleStringProperty(xtra_direct);
         this.remarksDisplay = new SimpleObjectProperty<>(remarksDisplay);
         this.paid_by = new SimpleStringProperty(paid_by);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id.get();
     }
 
     public ObjectProperty<Integer> idProperty() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id.set(id);
     }
 
     public String getStatus() {
@@ -92,20 +76,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status.set(status);
-    }
-
     public String getHotelName() {
         return hotelName.get();
     }
 
     public StringProperty hotelNameProperty() {
         return hotelName;
-    }
-
-    public void setHotelName(String hotelName) {
-        this.hotelName.set(hotelName);
     }
 
     public String getHotelBranch() {
@@ -116,20 +92,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return hotelBranch;
     }
 
-    public void setHotelBranch(String hotelBranch) {
-        this.hotelBranch.set(hotelBranch);
-    }
-
     public String getClientName() {
         return clientName.get();
     }
 
     public StringProperty clientNameProperty() {
         return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName.set(clientName);
     }
 
     public String getClientPhone() {
@@ -140,11 +108,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return clientPhone;
     }
 
-    public void setClientPhone(String clientPhone) {
-        this.clientPhone.set(clientPhone);
-    }
-
-    public int getAdults() {
+    public Integer getAdults() {
         return adults.get();
     }
 
@@ -152,19 +116,11 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return adults;
     }
 
-    public void setAdults(int adults) {
-        this.adults.set(adults);
-    }
-
     public ObjectProperty<Integer> childrenProperty() {
         return children;
     }
 
-    public void setChildren(int children) {
-        this.children.set(children);
-    }
-
-    public int getInfants() {
+    public Integer getInfants() {
         return infants.get();
     }
 
@@ -172,11 +128,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return infants;
     }
 
-    public void setInfants(int infants) {
-        this.infants.set(infants);
-    }
-
-    public int getReservations() {
+    public Integer getReservations() {
         return reservations.get();
     }
 
@@ -184,20 +136,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return reservations;
     }
 
-    public void setReservations(int reservations) {
-        this.reservations.set(reservations);
-    }
-
-    public int getNonReservations() {
+    public Integer getNonReservations() {
         return nonReservations.get();
     }
 
     public ObjectProperty<Integer> nonReservationsProperty() {
         return nonReservations;
-    }
-
-    public void setNonReservations(int nonReservations) {
-        this.nonReservations.set(nonReservations);
     }
 
     public String getSingles() {
@@ -208,20 +152,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return singles;
     }
 
-    public void setSingles(String singles) {
-        this.singles.set(singles);
-    }
-
     public String getDoubles() {
         return doubles.get();
     }
 
     public StringProperty doublesProperty() {
         return doubles;
-    }
-
-    public void setDoubles(String doubles) {
-        this.doubles.set(doubles);
     }
 
     public String getTriples() {
@@ -232,20 +168,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return triples;
     }
 
-    public void setTriples(String triples) {
-        this.triples.set(triples);
-    }
-
     public String getArrival() {
         return arrival.get();
     }
 
     public StringProperty arrivalProperty() {
         return arrival;
-    }
-
-    public void setArrival(String arrival) {
-        this.arrival.set(arrival);
     }
 
     public String getDeparture() {
@@ -256,11 +184,7 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return departure;
     }
 
-    public void setDeparture(String departure) {
-        this.departure.set(departure);
-    }
-
-    public int getDays() {
+    public Integer getDays() {
         return days.get();
     }
 
@@ -268,92 +192,12 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return days;
     }
 
-    public void setDays(int days) {
-        this.days.set(days);
-    }
-
-    public int getNights() {
+    public Integer getNights() {
         return nights.get();
     }
 
     public ObjectProperty<Integer> nightsProperty() {
         return nights;
-    }
-
-    public void setNights(int nights) {
-        this.nights.set(nights);
-    }
-
-    public String getB_b() {
-        return b_b.get();
-    }
-
-    public StringProperty b_bProperty() {
-        return b_b;
-    }
-
-    public void setB_b(String b_b) {
-        this.b_b.set(b_b);
-    }
-
-    public String getH_b() {
-        return h_b.get();
-    }
-
-    public StringProperty h_bProperty() {
-        return h_b;
-    }
-
-    public void setH_b(String h_b) {
-        this.h_b.set(h_b);
-    }
-
-    public String getF_b() {
-        return f_b.get();
-    }
-
-    public StringProperty f_bProperty() {
-        return f_b;
-    }
-
-    public void setF_b(String f_b) {
-        this.f_b.set(f_b);
-    }
-
-    public String getLunch() {
-        return lunch.get();
-    }
-
-    public StringProperty lunchProperty() {
-        return lunch;
-    }
-
-    public void setLunch(String lunch) {
-        this.lunch.set(lunch);
-    }
-
-    public String getDinner() {
-        return dinner.get();
-    }
-
-    public StringProperty dinnerProperty() {
-        return dinner;
-    }
-
-    public void setDinner(String dinner) {
-        this.dinner.set(dinner);
-    }
-
-    public String getXtra_direct() {
-        return xtra_direct.get();
-    }
-
-    public StringProperty xtra_directProperty() {
-        return xtra_direct;
-    }
-
-    public void setXtra_direct(String xtra_direct) {
-        this.xtra_direct.set(xtra_direct);
     }
 
     public Alert getRemarksDisplay() {
@@ -364,10 +208,6 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
         return remarksDisplay;
     }
 
-    public void setRemarksDisplay(Alert remarksDisplay) {
-        this.remarksDisplay.set(remarksDisplay);
-    }
-
     public String getPaid_by() {
         return paid_by.get();
     }
@@ -375,9 +215,4 @@ public class Reservations extends RecursiveTreeObject<Reservations> {
     public StringProperty paid_byProperty() {
         return paid_by;
     }
-
-    public void setPaid_by(String paid_by) {
-        this.paid_by.set(paid_by);
-    }
-
 }

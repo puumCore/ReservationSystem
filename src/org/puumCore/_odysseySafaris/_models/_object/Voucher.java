@@ -46,6 +46,11 @@ public class Voucher {
         return client;
     }
 
+    public Voucher setClient(Person client) {
+        this.client = client.setPersonType(Assistant.PersonType.CLIENT);
+        return this;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -111,11 +116,6 @@ public class Voucher {
 
     public Person getConfirmPerson() {
         return confirmPerson;
-    }
-
-    public Voucher setClient(Person client) {
-        this.client = client.setPersonType(Assistant.PersonType.CLIENT);
-        return this;
     }
 
     public Voucher setConfirmPerson(Person confirmPerson) {

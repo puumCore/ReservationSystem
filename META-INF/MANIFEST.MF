@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: org.puumCore._odysseySafaris.Main
+Class-Path: org.puumCore._odysseySafaris.**
+

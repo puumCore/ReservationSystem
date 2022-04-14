@@ -258,6 +258,8 @@ public class AddCtrl extends Brain implements Initializable {
         accept_only_numbers(adultsTF, childrenTF, infantsTF, resTF, daysTF, nightsTF);
 
         validation_of_phoneNumber(phoneTF);
+        validation_of_time(arrivalTP);
+        validation_of_time(departureTP);
 
         set_my_preferred_date_format(departureDP, arrivalDP);
         set_my_preferred_time_format(departureTP, arrivalTP);

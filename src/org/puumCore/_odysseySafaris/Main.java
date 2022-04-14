@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.puumCore._odysseySafaris._custom.WatchDog;
@@ -18,9 +19,9 @@ import java.util.Objects;
 public class Main extends Application {
 
     //for production
-    //public static final File RESOURCE_PATH = new File(System.getenv("APP_HOME").concat("\\_odyssey_safaris\\_reservation_sys"));
+    public static final File RESOURCE_PATH = new File(System.getenv("APP_HOME").concat("\\_odyssey_safaris\\_reservation_sys"));
     //for dev only
-    public static final File RESOURCE_PATH = new File(System.getenv("JAVAFX_DEV_APP_HOME").concat("\\_odyssey_safaris\\_reservation_sys"));
+    //public static final File RESOURCE_PATH = new File(System.getenv("JAVAFX_DEV_APP_HOME").concat("\\_odyssey_safaris\\_reservation_sys"));
     public static Connection DATA_SOURCE_CONNECTION;
     public static Stage stage;
     public static volatile boolean isAlive;
@@ -67,6 +68,7 @@ public class Main extends Application {
         scene.getStylesheets().addAll(Objects.requireNonNull(getClass().getResource("/_ui_ux/_css/autoCompletePopupStyle.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reservation System");
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/_ui_ux/_image/_logo/logo.png")).toExternalForm()));
         primaryStage.initStyle(StageStyle.DECORATED);
 
         primaryStage.show();

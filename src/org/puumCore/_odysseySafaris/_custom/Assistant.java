@@ -20,8 +20,18 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.puumCore._odysseySafaris.Main;
+import org.puumCore._odysseySafaris._models._object.Voucher;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -42,27 +52,8 @@ import java.util.regex.Pattern;
 
 public abstract class Assistant extends WatchDog {
 
-    public enum PersonType {
-        CLIENT(), CONFIRM()
-    }
-
-    public enum VoucherStatus {
-        RESERVE("Please Reserve"), AMEND("Amend"), CANCEL("Cancel");
-
-        String status;
-
-        VoucherStatus(String status) {
-            this.status = status;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-    }
-
     private static final int YEAR_OF_BIRTH = 2022;
     protected final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-    protected final DateTimeFormatter combinedDateTimeFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss:SSS");
     protected final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final UnaryOperator<TextFormatter.Change> integerFilter = change -> {
         String newText = change.getControlNewText();
@@ -91,6 +82,108 @@ public abstract class Assistant extends WatchDog {
             return super.fromString(string);
         }
     };
+    private final File EXCEL_TEMPLATE_FILE = new File(Main.RESOURCE_PATH.getAbsolutePath().concat("\\_excel\\_template\\voucher_template.xlsx"));
+    private final String EXCEL_DUMP_PATH = Main.RESOURCE_PATH.getAbsolutePath().concat("\\_excel\\_dump\\");
+
+    protected final File get_the_voucher_that_has_been_built(Voucher voucher) {
+        System.out.println("voucher = " + voucher);
+        File outputFile = null;
+        try {
+            /*
+             * NOTE!
+             * Rows : indexing starts from 0
+             * Columns : indexing starts from 1
+             * */
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream(EXCEL_TEMPLATE_FILE));
+            XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
+
+            Row voucherRow = xssfSheet.getRow(9);
+            voucherRow.getCell(2).setCellValue(voucher.getId());
+
+            Row hotelRow = xssfSheet.getRow(12);
+            hotelRow.getCell(0).setCellValue(voucher.getHotel().getName());
+            hotelRow.getCell(4).setCellValue(voucher.getHotel().getBranch());
+
+            Row clientRow = xssfSheet.getRow(15);
+            clientRow.getCell(2).setCellValue(voucher.getClient().getName());
+            clientRow.getCell(5).setCellValue(voucher.getClient().getPhone());
+
+            Row headCount_aRow = xssfSheet.getRow(16);
+            headCount_aRow.getCell(2).setCellValue(voucher.getHeadCount().getAdults());
+            headCount_aRow.getCell(5).setCellValue(voucher.getHeadCount().getChildren());
+            headCount_aRow.getCell(8).setCellValue(voucher.getHeadCount().getInfants());
+
+            Row headCount_bRow = xssfSheet.getRow(17);
+            headCount_bRow.getCell(2).setCellValue(voucher.getHeadCount().getRes());
+            headCount_bRow.getCell(5).setCellValue(voucher.getHeadCount().getNonRes());
+
+            Row reservationsRow = xssfSheet.getRow(20);
+            reservationsRow.getCell(2).setCellValue(voucher.getRoomType().getSingles() ? "YES" : "NO");
+            reservationsRow.getCell(5).setCellValue(voucher.getRoomType().getDoubles() ? "YES" : "NO");
+            reservationsRow.getCell(8).setCellValue(voucher.getRoomType().getTriples() ? "YES" : "NO");
+
+            Row units_aRow = xssfSheet.getRow(23);
+            units_aRow.getCell(2).setCellValue(voucher.getTimeLine().getArrival());
+            units_aRow.getCell(5).setCellValue(voucher.getTimeLine().getDeparture());
+
+            Row units_bRow = xssfSheet.getRow(24);
+            units_bRow.getCell(2).setCellValue(voucher.getTimeLine().getDays());
+            units_bRow.getCell(5).setCellValue(voucher.getTimeLine().getNights());
+
+            Row mealPlans_aRow = xssfSheet.getRow(27);
+            mealPlans_aRow.getCell(3).setCellValue(voucher.getMealPlan().getB_b() ? "YES" : "NO");
+            mealPlans_aRow.getCell(6).setCellValue(voucher.getMealPlan().getH_b() ? "YES" : "NO");
+            mealPlans_aRow.getCell(9).setCellValue(voucher.getMealPlan().getF_b() ? "YES" : "NO");
+
+            Row mealPlans_bRow = xssfSheet.getRow(28);
+            mealPlans_bRow.getCell(3).setCellValue(voucher.getMealPlan().getLunch() ? "YES" : "NO");
+            mealPlans_bRow.getCell(6).setCellValue(voucher.getMealPlan().getDinner() ? "YES" : "NO");
+            mealPlans_bRow.getCell(9).setCellValue(voucher.getMealPlan().getXtra_direct() ? "YES" : "NO");
+
+
+            if (voucher.getRemarks() != null) {
+                Row remarksRow = xssfSheet.getRow(31);
+                remarksRow.getCell(0).setCellValue(voucher.getRemarks());
+            }
+
+            if (voucher.getConfirmPerson() != null) {
+                Row remarksRow = xssfSheet.getRow(34);
+                remarksRow.getCell(1).setCellValue(String.format("%s (%s)", voucher.getConfirmPerson().getName(), voucher.getConfirmPerson().getPhone()));
+            }
+
+            Row paymentRow = xssfSheet.getRow(37);
+            paymentRow.getCell(2).setCellValue(voucher.getPaidBy());
+
+            Row timeStampRow = xssfSheet.getRow(41);
+            timeStampRow.getCell(6).setCellValue(get_time_stamp());
+
+            outputFile = new File(EXCEL_DUMP_PATH.concat(String.format("voucher_%d.xlsx", voucher.getId())));
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+            prevent_excel_from_been_modified(xssfWorkbook, xssfSheet);
+            xssfWorkbook.write(fileOutputStream);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Thread(write_stack_trace(e)).start();
+            Platform.runLater(() -> programmer_error(e).show());
+        }
+        return outputFile;
+    }
+
+    private void prevent_excel_from_been_modified(XSSFWorkbook xssfWorkbook, XSSFSheet xssfSheet) {
+        String password = RandomStringUtils.randomAlphanumeric(8);
+        byte[] pwdBytes = password.getBytes(StandardCharsets.UTF_8);
+        xssfSheet.lockDeleteColumns();
+        xssfSheet.lockDeleteRows();
+        xssfSheet.lockFormatCells();
+        xssfSheet.lockFormatColumns();
+        xssfSheet.lockFormatRows();
+        xssfSheet.lockInsertColumns();
+        xssfSheet.lockInsertRows();
+        xssfSheet.getCTWorksheet().getSheetProtection().setPassword(pwdBytes);
+        xssfSheet.enableLocking();
+        xssfWorkbook.lockStructure();
+    }
 
     protected final Thread load_task_into_a_thread(Task<?> task) {
         task.exceptionProperty().addListener(((observable, oldValue, newValue) -> {
@@ -114,7 +207,6 @@ public abstract class Assistant extends WatchDog {
         };
         return load_task_into_a_thread(task);
     }
-
 
     protected final void clear_textFields(Node... nodes) {
         Arrays.stream(nodes).forEach(node -> {
@@ -228,8 +320,8 @@ public abstract class Assistant extends WatchDog {
         }));
     }
 
-    protected final void validation_of_time(JFXDatePicker jfxDatePicker) {
-        TextField textField = jfxDatePicker.getEditor();
+    protected final void validation_of_time(JFXTimePicker jfxTimePicker) {
+        TextField textField = jfxTimePicker.getEditor();
         textField.textProperty().addListener(((observable, oldValue, newValue) -> {
             if (the_time_is_the_correct_format(newValue)) {
                 Platform.runLater(() -> textField.setStyle("-fx-background-radius: 7px;\n -fx-text-fill: #1D1A1A;"));
@@ -239,12 +331,8 @@ public abstract class Assistant extends WatchDog {
         }));
     }
 
-    protected final boolean the_date_is_the_correct_format(String param) {
-        return Pattern.matches("[0-9]{1,2}-[a-zA-Z]{3,4}-[0-9]{4}", param);
-    }
-
     protected final boolean the_time_is_the_correct_format(String param) {
-        return Pattern.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", param);
+        return Pattern.matches("^([0]?[0-9]|2[0-3]):[0-5][0-9]$", param);
     }
 
     protected final boolean phoneNumber_is_in_correct_format(String param) {
@@ -253,11 +341,6 @@ public abstract class Assistant extends WatchDog {
                 Pattern.matches("^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", param) ||
                 Pattern.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", param);
     }
-
-    protected final boolean is_a_number(String param) {
-        return Pattern.matches("[+]?[0-9]+", param);
-    }
-
 
     protected final Runnable home_skeleton(final String fxmlResourcePath, final StackPane stackPane) {
         return () -> Platform.runLater(() -> {
@@ -325,6 +408,24 @@ public abstract class Assistant extends WatchDog {
                     jfxButton.setStyle("-fx-text-fill: #000000;");
                 }
             }
+        }
+    }
+
+    public enum PersonType {
+        CLIENT(), CONFIRM()
+    }
+
+    public enum VoucherStatus {
+        RESERVE("Please Reserve"), AMEND("Amend"), CANCEL("Cancel");
+
+        String status;
+
+        VoucherStatus(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
         }
     }
 

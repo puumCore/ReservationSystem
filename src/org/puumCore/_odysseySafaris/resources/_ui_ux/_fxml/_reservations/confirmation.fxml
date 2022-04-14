@@ -7,7 +7,8 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.SVGPath?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+           minWidth="-Infinity"
            prefHeight="161.0" prefWidth="475.0" style="-fx-background-color: #fefefe;"
            stylesheets="@../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171"
            fx:controller="org.puumCore._odysseySafaris._controller._reservations.ConfirmationCtrl">

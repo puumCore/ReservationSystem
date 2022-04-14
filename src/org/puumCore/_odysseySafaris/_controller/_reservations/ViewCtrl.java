@@ -12,14 +12,21 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
+import org.puumCore._odysseySafaris.Main;
 import org.puumCore._odysseySafaris._custom.Brain;
 import org.puumCore._odysseySafaris._interface.ViewingService;
 import org.puumCore._odysseySafaris._models._object.Voucher;
 import org.puumCore._odysseySafaris._models._table.Reservations;
 import org.puumCore._odysseySafaris._outsourced.ActionButtonTableCell;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -94,24 +101,6 @@ public class ViewCtrl extends Brain implements ViewingService {
     private TreeTableColumn<Reservations, Integer> nightsCol;
 
     @FXML
-    private TreeTableColumn<Reservations, String> bbCol;
-
-    @FXML
-    private TreeTableColumn<Reservations, String> hbCol;
-
-    @FXML
-    private TreeTableColumn<Reservations, String> fbCol;
-
-    @FXML
-    private TreeTableColumn<Reservations, String> lunchCol;
-
-    @FXML
-    private TreeTableColumn<Reservations, String> dinnerCol;
-
-    @FXML
-    private TreeTableColumn<Reservations, String> xtraCol;
-
-    @FXML
     private TreeTableColumn<Reservations, JFXButton> remarksCol;
 
     @FXML
@@ -155,7 +144,6 @@ public class ViewCtrl extends Brain implements ViewingService {
                 update_suggestions(autoCompletePopup, stringObservableList);
             }
         };
-
     }
 
     @Override
@@ -190,17 +178,10 @@ public class ViewCtrl extends Brain implements ViewingService {
                 doublesCol.setCellValueFactory(param -> param.getValue().getValue().doublesProperty());
                 triplesCol.setCellValueFactory(param -> param.getValue().getValue().triplesProperty());
 
-                arrivalCol.setCellValueFactory(param -> param.getValue().getValue().singlesProperty());
-                departureCol.setCellValueFactory(param -> param.getValue().getValue().singlesProperty());
+                arrivalCol.setCellValueFactory(param -> param.getValue().getValue().arrivalProperty());
+                departureCol.setCellValueFactory(param -> param.getValue().getValue().departureProperty());
                 daysCol.setCellValueFactory(param -> param.getValue().getValue().daysProperty());
                 nightsCol.setCellValueFactory(param -> param.getValue().getValue().nightsProperty());
-
-                bbCol.setCellValueFactory(param -> param.getValue().getValue().b_bProperty());
-                hbCol.setCellValueFactory(param -> param.getValue().getValue().h_bProperty());
-                fbCol.setCellValueFactory(param -> param.getValue().getValue().f_bProperty());
-                lunchCol.setCellValueFactory(param -> param.getValue().getValue().lunchProperty());
-                dinnerCol.setCellValueFactory(param -> param.getValue().getValue().dinnerProperty());
-                xtraCol.setCellValueFactory(param -> param.getValue().getValue().xtra_directProperty());
 
                 remarksCol.setCellFactory(ActionButtonTableCell.for_table_column("View", (Reservations reservations) -> {
                     reservations.getRemarksDisplay().show();
@@ -239,6 +220,16 @@ public class ViewCtrl extends Brain implements ViewingService {
                 }));
                 downloadCol.setCellFactory(ActionButtonTableCell.for_table_column("Get", (Reservations reservations) -> {
                     information_message("This is not yet configured");
+                    //There is an error with generating an excel file
+
+                    /*Voucher fullVoucherWithItsId = get_full_voucher_with_its_ID(reservations.getId());
+                    if (fullVoucherWithItsId == null) {
+                        error_message("Failed to connect!", "Could not connect to the datasource.").show();
+                    } else if (fullVoucherWithItsId.isEmpty()) {
+                        warning_message("Voucher not found!", "It appears the voucher has been deleted. Please refresh your table to see changes made.").show();
+                    } else {
+                        Platform.runLater(voucher_document_generation_services(fullVoucherWithItsId));
+                    }*/
                     return reservations;
                 }));
 
@@ -249,6 +240,33 @@ public class ViewCtrl extends Brain implements ViewingService {
                     jfxTreeTableView.setShowRoot(false);
                 });
                 jfxTreeTableView.refresh();
+            }
+        };
+    }
+
+    private Runnable voucher_document_generation_services(final Voucher voucher) {
+        return () -> {
+            File theVoucherThatHasBeenBuilt = get_the_voucher_that_has_been_built(voucher);
+            if (theVoucherThatHasBeenBuilt == null) {
+                Platform.runLater(() -> error_message("Failed to download!", "The voucher document could not be built.").show());
+            } else {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Choose where you would like to save the file");
+                File folder = directoryChooser.showDialog(Main.stage);
+                if (folder != null) {
+                    try {
+                        Path copy = Files.copy(theVoucherThatHasBeenBuilt.toPath(), new File(folder.getAbsolutePath().concat("\\").concat(theVoucherThatHasBeenBuilt.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        Desktop.getDesktop().open(copy.toFile());
+                        Platform.runLater(() -> success_notification("Opening the voucher document has been triggered, please wait.").show());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        new Thread(write_stack_trace(e)).start();
+                        Platform.runLater(() -> {
+                            programmer_error(e).showAndWait();
+                            error_message("Failed to save!", "Something bad happened when attempting to save the file at the desired destination.").show();
+                        });
+                    }
+                }
             }
         };
     }

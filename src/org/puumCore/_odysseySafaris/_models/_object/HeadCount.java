@@ -58,6 +58,10 @@ public class HeadCount {
         return this;
     }
 
+    public Integer getNonRes() {
+        return ((this.getAdults() + this.getChildren() + this.getInfants()) - this.getRes());
+    }
+
     public boolean isEmpty() {
         return this.toString().equals("{}");
     }
