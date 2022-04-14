@@ -1,4 +1,4 @@
-# ReservationSesystem
+# ReservationSystem
 
 <h3>How to install</h3>
 <ol>
