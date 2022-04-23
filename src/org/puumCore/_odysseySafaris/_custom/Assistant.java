@@ -85,60 +85,59 @@ public abstract class Assistant extends WatchDog {
     private final File EXCEL_TEMPLATE_FILE = new File(Main.RESOURCE_PATH.getAbsolutePath().concat("\\_excel\\_template\\voucher_template.xlsx"));
     private final String EXCEL_DUMP_PATH = Main.RESOURCE_PATH.getAbsolutePath().concat("\\_excel\\_dump\\");
 
+    /**
+     * NOTE!
+     * Rows : indexing starts from 0
+     * Columns : indexing starts from 0
+     * */
     protected final File get_the_voucher_that_has_been_built(Voucher voucher) {
-        System.out.println("voucher = " + voucher);
         File outputFile = null;
         try {
-            /*
-             * NOTE!
-             * Rows : indexing starts from 0
-             * Columns : indexing starts from 1
-             * */
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream(EXCEL_TEMPLATE_FILE));
             XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
 
             Row voucherRow = xssfSheet.getRow(9);
-            voucherRow.getCell(2).setCellValue(voucher.getId());
+            voucherRow.getCell(1).setCellValue(voucher.getId());
 
             Row hotelRow = xssfSheet.getRow(12);
             hotelRow.getCell(0).setCellValue(voucher.getHotel().getName());
-            hotelRow.getCell(4).setCellValue(voucher.getHotel().getBranch());
+            hotelRow.getCell(5).setCellValue(voucher.getHotel().getBranch());
 
             Row clientRow = xssfSheet.getRow(15);
-            clientRow.getCell(2).setCellValue(voucher.getClient().getName());
-            clientRow.getCell(5).setCellValue(voucher.getClient().getPhone());
+            clientRow.getCell(1).setCellValue(voucher.getClient().getName());
+            clientRow.getCell(6).setCellValue(voucher.getClient().getPhone());
 
             Row headCount_aRow = xssfSheet.getRow(16);
-            headCount_aRow.getCell(2).setCellValue(voucher.getHeadCount().getAdults());
-            headCount_aRow.getCell(5).setCellValue(voucher.getHeadCount().getChildren());
-            headCount_aRow.getCell(8).setCellValue(voucher.getHeadCount().getInfants());
+            headCount_aRow.getCell(1).setCellValue(voucher.getHeadCount().getAdults());
+            headCount_aRow.getCell(4).setCellValue(voucher.getHeadCount().getChildren());
+            headCount_aRow.getCell(7).setCellValue(voucher.getHeadCount().getInfants());
 
             Row headCount_bRow = xssfSheet.getRow(17);
-            headCount_bRow.getCell(2).setCellValue(voucher.getHeadCount().getRes());
+            headCount_bRow.getCell(1).setCellValue(voucher.getHeadCount().getRes());
             headCount_bRow.getCell(5).setCellValue(voucher.getHeadCount().getNonRes());
 
             Row reservationsRow = xssfSheet.getRow(20);
-            reservationsRow.getCell(2).setCellValue(voucher.getRoomType().getSingles() ? "YES" : "NO");
-            reservationsRow.getCell(5).setCellValue(voucher.getRoomType().getDoubles() ? "YES" : "NO");
-            reservationsRow.getCell(8).setCellValue(voucher.getRoomType().getTriples() ? "YES" : "NO");
+            reservationsRow.getCell(1).setCellValue(voucher.getRoomType().getSingles() ? "YES" : "NO");
+            reservationsRow.getCell(4).setCellValue(voucher.getRoomType().getDoubles() ? "YES" : "NO");
+            reservationsRow.getCell(7).setCellValue(voucher.getRoomType().getTriples() ? "YES" : "NO");
 
             Row units_aRow = xssfSheet.getRow(23);
-            units_aRow.getCell(2).setCellValue(voucher.getTimeLine().getArrival());
+            units_aRow.getCell(1).setCellValue(voucher.getTimeLine().getArrival());
             units_aRow.getCell(5).setCellValue(voucher.getTimeLine().getDeparture());
 
             Row units_bRow = xssfSheet.getRow(24);
-            units_bRow.getCell(2).setCellValue(voucher.getTimeLine().getDays());
-            units_bRow.getCell(5).setCellValue(voucher.getTimeLine().getNights());
+            units_bRow.getCell(1).setCellValue(voucher.getTimeLine().getDays());
+            units_bRow.getCell(4).setCellValue(voucher.getTimeLine().getNights());
 
             Row mealPlans_aRow = xssfSheet.getRow(27);
-            mealPlans_aRow.getCell(3).setCellValue(voucher.getMealPlan().getB_b() ? "YES" : "NO");
-            mealPlans_aRow.getCell(6).setCellValue(voucher.getMealPlan().getH_b() ? "YES" : "NO");
-            mealPlans_aRow.getCell(9).setCellValue(voucher.getMealPlan().getF_b() ? "YES" : "NO");
+            mealPlans_aRow.getCell(2).setCellValue(voucher.getMealPlan().getB_b() ? "YES" : "NO");
+            mealPlans_aRow.getCell(5).setCellValue(voucher.getMealPlan().getH_b() ? "YES" : "NO");
+            mealPlans_aRow.getCell(8).setCellValue(voucher.getMealPlan().getF_b() ? "YES" : "NO");
 
             Row mealPlans_bRow = xssfSheet.getRow(28);
-            mealPlans_bRow.getCell(3).setCellValue(voucher.getMealPlan().getLunch() ? "YES" : "NO");
-            mealPlans_bRow.getCell(6).setCellValue(voucher.getMealPlan().getDinner() ? "YES" : "NO");
-            mealPlans_bRow.getCell(9).setCellValue(voucher.getMealPlan().getXtra_direct() ? "YES" : "NO");
+            mealPlans_bRow.getCell(2).setCellValue(voucher.getMealPlan().getLunch() ? "YES" : "NO");
+            mealPlans_bRow.getCell(5).setCellValue(voucher.getMealPlan().getDinner() ? "YES" : "NO");
+            mealPlans_bRow.getCell(8).setCellValue(voucher.getMealPlan().getXtra_direct() ? "YES" : "NO");
 
 
             if (voucher.getRemarks() != null) {
@@ -148,14 +147,14 @@ public abstract class Assistant extends WatchDog {
 
             if (voucher.getConfirmPerson() != null) {
                 Row remarksRow = xssfSheet.getRow(34);
-                remarksRow.getCell(1).setCellValue(String.format("%s (%s)", voucher.getConfirmPerson().getName(), voucher.getConfirmPerson().getPhone()));
+                remarksRow.getCell(2).setCellValue(String.format("%s (%s)", voucher.getConfirmPerson().getName(), voucher.getConfirmPerson().getPhone()));
             }
 
             Row paymentRow = xssfSheet.getRow(37);
-            paymentRow.getCell(2).setCellValue(voucher.getPaidBy());
+            paymentRow.getCell(1).setCellValue(voucher.getPaidBy());
 
             Row timeStampRow = xssfSheet.getRow(41);
-            timeStampRow.getCell(6).setCellValue(get_time_stamp());
+            timeStampRow.getCell(7).setCellValue(get_time_stamp());
 
             outputFile = new File(EXCEL_DUMP_PATH.concat(String.format("voucher_%d.xlsx", voucher.getId())));
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);

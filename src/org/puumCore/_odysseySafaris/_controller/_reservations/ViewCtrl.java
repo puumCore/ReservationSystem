@@ -219,17 +219,14 @@ public class ViewCtrl extends Brain implements ViewingService {
                     return reservations;
                 }));
                 downloadCol.setCellFactory(ActionButtonTableCell.for_table_column("Get", (Reservations reservations) -> {
-                    information_message("This is not yet configured");
-                    //There is an error with generating an excel file
-
-                    /*Voucher fullVoucherWithItsId = get_full_voucher_with_its_ID(reservations.getId());
+                    Voucher fullVoucherWithItsId = get_full_voucher_with_its_ID(reservations.getId());
                     if (fullVoucherWithItsId == null) {
                         error_message("Failed to connect!", "Could not connect to the datasource.").show();
                     } else if (fullVoucherWithItsId.isEmpty()) {
                         warning_message("Voucher not found!", "It appears the voucher has been deleted. Please refresh your table to see changes made.").show();
                     } else {
                         Platform.runLater(voucher_document_generation_services(fullVoucherWithItsId));
-                    }*/
+                    }
                     return reservations;
                 }));
 
