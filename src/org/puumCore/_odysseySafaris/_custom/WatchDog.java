@@ -203,11 +203,10 @@ public class WatchDog {
     }
 
 
-    protected final Task<Object> write_log(Log log) {
+    public final Task<Object> write_log(Log log) {
         return new Task<Object>() {
             @Override
             protected Object call() {
-                log.setTimeStamp(get_time_stamp());
                 write_object_of_an_array_into_a_json_file(new Gson().toJsonTree(log, Log.class), PATH_TO_INFO_FOLDER.concat(gate_date_for_file_name()).concat(".json"));
                 return null;
             }

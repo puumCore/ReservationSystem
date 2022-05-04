@@ -3,6 +3,9 @@ package org.puumCore._odysseySafaris._models._object;
 import com.google.gson.GsonBuilder;
 import org.puumCore._odysseySafaris._custom.WatchDog;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Puum Core (Mandela Muriithi)<br>
  * <a href = https://github.com/puumCore>GitHub: Mandela Muriithi</a>
@@ -12,42 +15,40 @@ import org.puumCore._odysseySafaris._custom.WatchDog;
 
 public class Log {
 
-    private String timeStamp;
+    private final String timeStamp;
     private String action;
-    private String info;
+    private List<String> info;
 
     public Log() {
         this.timeStamp = new WatchDog().get_time_stamp();
     }
 
-    public Log(String action, String info) {
+    public Log(String action, String... info) {
         this.timeStamp = new WatchDog().get_time_stamp();
         this.action = action;
-        this.info = info;
+        this.info = Arrays.asList(info.clone());
     }
 
     public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
     public String getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public Log setAction(String action) {
         this.action = action;
+        return this;
     }
 
-    public String getInfo() {
+    public List<String> getInfo() {
         return info;
     }
 
-    public void setInfo(String info) {
+    public Log setInfo(List<String> info) {
         this.info = info;
+        return this;
     }
 
     public boolean isEmpty() {

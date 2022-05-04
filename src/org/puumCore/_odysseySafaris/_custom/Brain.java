@@ -688,7 +688,7 @@ public abstract class Brain extends Assistant {
                     "?);");
             preparedStatement.setInt(1, voucherId);
             preparedStatement.setString(2, log.getTimeStamp());
-            preparedStatement.setString(3, log.getAction().concat(": ").concat(log.getInfo()));
+            preparedStatement.setString(3, log.getAction().concat(": ").concat(Arrays.toString(log.getInfo().toArray())));
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {

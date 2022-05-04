@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.puumCore._odysseySafaris._custom.WatchDog;
+import org.puumCore._odysseySafaris._models._object.Log;
 
 import java.io.File;
 import java.sql.Connection;
@@ -45,6 +46,7 @@ public class Main extends Application {
             if (host == null || port == null || ds_name == null || ds_user == null || ds_password == null) {
                 watchDog.error_alert(String.format("%d Attempts left", (3 - attempts)), "Update the settings file appropriately then retry.");
             } else {
+                new Thread(watchDog.write_log(new Log("Setting up Settings config", ("host = " + host), ("port = " + port), ("ds_name = " + ds_name), ("ds_user = " + ds_user), ("ds_password = " + ds_password), ("PATH_TO_SETTINGS_FILE = " + PATH_TO_SETTINGS_FILE)))).start();
                 Main.DATA_SOURCE_CONNECTION = get_connection_to_dataSource(host, port, ds_name, ds_user, ds_password);
                 break;
             }
@@ -54,6 +56,8 @@ public class Main extends Application {
             watchDog.error_alert("Connection could not be established!", "Could not connect to the database.");
             watchDog.system_exit();
         }
+
+        System.out.println("Main.DATA_SOURCE_CONNECTION = " + Main.DATA_SOURCE_CONNECTION);
 
         Parent root = FXMLLoader.load(getClass().getResource("/_ui_ux/_fxml/sample.fxml"));
         Scene scene = new Scene(root);
