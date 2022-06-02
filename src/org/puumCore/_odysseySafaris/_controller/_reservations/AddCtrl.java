@@ -12,6 +12,8 @@ import org.puumCore._odysseySafaris._custom.Brain;
 import org.puumCore._odysseySafaris._models._object.*;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 /**
@@ -117,6 +119,9 @@ public class AddCtrl extends Brain implements Initializable {
         }
         status.getSelectedToggle().setSelected(false);
         payment.getSelectedToggle().setSelected(false);
+
+        arrivalDP.setValue(LocalDate.now());
+        arrivalTP.setValue(LocalTime.now());
         event.consume();
     }
 
@@ -263,5 +268,9 @@ public class AddCtrl extends Brain implements Initializable {
 
         set_my_preferred_date_format(departureDP, arrivalDP);
         set_my_preferred_time_format(departureTP, arrivalTP);
+
+        arrivalDP.setValue(LocalDate.now());
+        arrivalTP.setValue(LocalTime.now());
     }
+
 }

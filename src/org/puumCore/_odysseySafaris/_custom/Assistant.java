@@ -331,7 +331,7 @@ public abstract class Assistant extends WatchDog {
     }
 
     protected final boolean the_time_is_the_correct_format(String param) {
-        return Pattern.matches("^([0]?[0-9]|2[0-3]):[0-5][0-9]$", param);
+        return Pattern.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$", param);
     }
 
     protected final boolean phoneNumber_is_in_correct_format(String param) {
@@ -415,7 +415,7 @@ public abstract class Assistant extends WatchDog {
     }
 
     public enum VoucherStatus {
-        RESERVE("Please Reserve"), AMEND("Amend"), CANCEL("Cancel");
+        RESERVE("Reserved"), AMEND("Amend"), CANCEL("Cancel");
 
         String status;
 

@@ -64,6 +64,7 @@ public class ConfirmationCtrl extends Brain implements Initializable {
         } else {
             error_message("Failed to save!", "The voucher could not be updated on whom has confirmed it.").show();
         }
+        event.consume();
     }
 
     @Override

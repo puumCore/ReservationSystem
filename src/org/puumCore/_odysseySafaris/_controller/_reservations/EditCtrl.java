@@ -275,7 +275,7 @@ public class EditCtrl extends Brain implements Initializable {
             }
 
             String selected_status = (status.getSelectedToggle().equals(reserveRB)) ? VoucherStatus.RESERVE.getStatus() : (status.getSelectedToggle().equals(amendRB)) ? VoucherStatus.AMEND.getStatus() : VoucherStatus.CANCEL.getStatus();
-            if (!this.myVoucher.getStatus().equals(selected_status)) {
+            if (this.myVoucher.getStatus() == null || !this.myVoucher.getStatus().equals(selected_status)) {
                 voucher.setStatus(selected_status);
             }
 
@@ -329,6 +329,10 @@ public class EditCtrl extends Brain implements Initializable {
     }
 
     private void show_instance_info() {
+        if (this.myVoucher == null) {
+            information_message("Please exit this window and refresh the table by typing #all");
+            return;
+        }
         if (this.myVoucher.getHotel().getBranch() != null) {
             branchTF.setText(this.myVoucher.getHotel().getBranch());
         }

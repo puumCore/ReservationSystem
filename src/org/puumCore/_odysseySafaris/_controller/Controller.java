@@ -21,6 +21,9 @@ import java.util.ResourceBundle;
 public class Controller extends Assistant implements UserExperience {
 
     @FXML
+    public StackPane workSpacePane;
+
+    @FXML
     private StackPane aboutPane;
 
     @FXML

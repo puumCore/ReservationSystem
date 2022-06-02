@@ -95,7 +95,6 @@ public abstract class Brain extends Assistant {
                     "\tinto\n" +
                     "\tconfirmation (name,\n" +
                     "\tphone)\n" +
-                    "where\n" +
                     "values (?,\n" +
                     "?);", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, confirmPerson.getName());
@@ -238,7 +237,7 @@ public abstract class Brain extends Assistant {
             preparedStatement.setString(1, voucher.getStatus());
             preparedStatement.setString(2, voucher.getRemarks());
             preparedStatement.setString(3, voucher.getPaidBy());
-            preparedStatement.setInt(5, voucher.getId());
+            preparedStatement.setInt(4, voucher.getId());
             isOkay = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
         } catch (SQLException e) {
@@ -402,6 +401,8 @@ public abstract class Brain extends Assistant {
                     "where\n" +
                     "\t(r.hotel_name like ?)\n" +
                     "\tor (r.hotel_branch like ?)\n" +
+                    "\tor (r.status like ?)\n" +
+                    "\tor(r.paid_by like ?)\n" +
                     "\tor (r.client_name like ?)\n" +
                     "\tor (r.client_phone like ?)\n" +
                     "\tor (r.arrival like ?)\n" +
@@ -433,7 +434,7 @@ public abstract class Brain extends Assistant {
                             resultSet.getString(16),
                             resultSet.getInt(17),
                             resultSet.getInt(18),
-                            get_dynamic_alert("Remarks", resultSet.getString(25)),
+                            (resultSet.getString(25) == null ? null : get_dynamic_alert("Remarks", resultSet.getString(25))),
                             resultSet.getString(26)
                     ));
                 }
@@ -489,7 +490,6 @@ public abstract class Brain extends Assistant {
             return null;
         }
         boolean isOkay = false;
-        create_log(voucher.getId(), new Log("Creation Attempt", "Trying to create a new voucher"));
         try {
             Savepoint savepoint = Main.DATA_SOURCE_CONNECTION.setSavepoint();
             //Adding new hotel
@@ -645,7 +645,6 @@ public abstract class Brain extends Assistant {
                                                                 if (generatedKeys != null && generatedKeys.next()) {
                                                                     voucher.setId(generatedKeys.getInt(1));
                                                                     generatedKeys.close();
-                                                                    System.out.println("voucher = " + voucher);
                                                                     create_log(voucher.getId(), new Log("Created voucher", "It was successful"));
                                                                 }
                                                             }

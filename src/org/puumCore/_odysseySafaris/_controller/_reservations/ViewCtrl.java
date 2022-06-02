@@ -62,6 +62,12 @@ public class ViewCtrl extends Brain implements ViewingService {
     private TreeTableColumn<Reservations, String> statusCol;
 
     @FXML
+    private TreeTableColumn<Reservations, String> clientNameCol;
+
+    @FXML
+    private TreeTableColumn<Reservations, String> clientPhoneCol;
+
+    @FXML
     private TreeTableColumn<Reservations, String> paymentInfoCol;
 
     @FXML
@@ -164,6 +170,9 @@ public class ViewCtrl extends Brain implements ViewingService {
                 hotelNameCol.setCellValueFactory(param -> param.getValue().getValue().hotelNameProperty());
                 hotelBranchCol.setCellValueFactory(param -> param.getValue().getValue().hotelBranchProperty());
 
+                clientNameCol.setCellValueFactory(param -> param.getValue().getValue().clientNameProperty());
+                clientPhoneCol.setCellValueFactory(param -> param.getValue().getValue().clientPhoneProperty());
+
                 statusCol.setCellValueFactory(param -> param.getValue().getValue().statusProperty());
 
                 paymentInfoCol.setCellValueFactory(param -> param.getValue().getValue().paid_byProperty());
@@ -184,10 +193,14 @@ public class ViewCtrl extends Brain implements ViewingService {
                 nightsCol.setCellValueFactory(param -> param.getValue().getValue().nightsProperty());
 
                 remarksCol.setCellFactory(ActionButtonTableCell.for_table_column("View", (Reservations reservations) -> {
-                    reservations.getRemarksDisplay().show();
+                    if (reservations.getRemarksDisplay() != null) {
+                        reservations.getRemarksDisplay().show();
+                    } else {
+                        information_message("There were no remarks provided for this voucher");
+                    }
                     return reservations;
                 }));
-                updateCol.setCellFactory(ActionButtonTableCell.for_table_column("Update", (Reservations reservations) -> {
+                updateCol.setCellFactory(ActionButtonTableCell.for_table_column("Edit", (Reservations reservations) -> {
                     try {
                         Voucher fullVoucherWithItsId = get_full_voucher_with_its_ID(reservations.getId());
                         if (fullVoucherWithItsId == null) {

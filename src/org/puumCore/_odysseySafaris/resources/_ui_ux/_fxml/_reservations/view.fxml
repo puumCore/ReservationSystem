@@ -4,87 +4,61 @@
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.octicons.OctIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" cacheShape="false" centerShape="false" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="604.0" prefWidth="1303.0" stylesheets="@../../_css/universal.css"
-            xmlns="http://javafx.com/javafx/8.0.171"
-            fx:controller="org.puumCore._odysseySafaris._controller._reservations.ViewCtrl">
+
+<AnchorPane cacheShape="false" centerShape="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="1303.0" stylesheets="@../../_css/universal.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.puumCore._odysseySafaris._controller._reservations.ViewCtrl">
     <children>
-        <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0"
-                    style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
+        <AnchorPane layoutX="17.5" layoutY="17.5" prefHeight="64.0" prefWidth="350.0" style="-fx-background-color: #FEFEFE; -fx-background-radius: 5px;">
             <effect>
-                <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1"/>
+                <DropShadow color="#00000033" height="12.1" radius="5.55" width="12.1" />
             </effect>
             <children>
-                <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0"
-                           style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
+                <StackPane layoutX="19.0" layoutY="10.0" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: #F1F1F1; -fx-background-radius: 30px;">
                     <children>
-                        <JFXTextField fx:id="searchTF" focusColor="#405aa800" onAction="#find" prefHeight="47.0"
-                                      prefWidth="311.0" promptText="Type something unique" styleClass="search_text"
-                                      unFocusColor="#4d4d4d00">
+                        <JFXTextField fx:id="searchTF" focusColor="#405aa800" onAction="#find" prefHeight="47.0" prefWidth="311.0" promptText="Type something unique" styleClass="search_text" unFocusColor="#4d4d4d00">
                             <padding>
-                                <Insets left="40.0" right="20.0"/>
+                                <Insets left="40.0" right="20.0" />
                             </padding>
                         </JFXTextField>
                         <OctIconView fill="#a0a0a0" glyphName="SEARCH" size="17">
                             <StackPane.margin>
-                                <Insets right="260.0"/>
+                                <Insets right="260.0" />
                             </StackPane.margin>
                         </OctIconView>
                     </children>
                 </StackPane>
             </children>
         </AnchorPane>
-        <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="505.0" prefWidth="1267.0">
+        <ScrollPane layoutX="19.0" layoutY="99.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="1267.0">
             <content>
-                <JFXTreeTableView fx:id="treeTable" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity"
-                                  minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="1870.0"
-                                  stylesheets="@../../_css/table_style.css">
+                <JFXTreeTableView fx:id="treeTable" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="2219.0" stylesheets="@../../_css/table_style.css">
                     <columns>
-                        <TreeTableColumn fx:id="voucherIdCol" editable="false" prefWidth="40.0" resizable="false"
-                                         sortable="false" text="ID"/>
-                        <TreeTableColumn fx:id="hotelNameCol" editable="false" prefWidth="150.0" resizable="false"
-                                         sortable="false" text="Hotel Name"/>
-                        <TreeTableColumn fx:id="hotelBranchCol" editable="false" prefWidth="150.0" resizable="false"
-                                         sortable="false" text="Branch"/>
-                        <TreeTableColumn fx:id="statusCol" editable="false" prefWidth="90.0" resizable="false"
-                                         sortable="false" text="Status"/>
-                        <TreeTableColumn fx:id="paymentInfoCol" editable="false" prefWidth="150.0" resizable="false"
-                                         sortable="false" text="Payment"/>
-                        <TreeTableColumn fx:id="adultsCol" editable="false" prefWidth="50.0" resizable="false"
-                                         sortable="false" text="+18"/>
-                        <TreeTableColumn fx:id="childrenCol" editable="false" prefWidth="50.0" resizable="false"
-                                         sortable="false" text=" -18"/>
-                        <TreeTableColumn fx:id="infantCol" editable="false" prefWidth="70.0" resizable="false"
-                                         sortable="false" text="Infant"/>
-                        <TreeTableColumn fx:id="resCol" editable="false" prefWidth="50.0" resizable="false"
-                                         sortable="false" text="Res"/>
-                        <TreeTableColumn fx:id="nonResCol" editable="false" prefWidth="90.0" resizable="false"
-                                         sortable="false" text="Non- Res"/>
-                        <TreeTableColumn fx:id="singlesCol" editable="false" prefWidth="75.0" resizable="false"
-                                         sortable="false" text="Singles"/>
-                        <TreeTableColumn fx:id="doublesCol" editable="false" prefWidth="85.0" resizable="false"
-                                         sortable="false" text="Doubles"/>
-                        <TreeTableColumn fx:id="triplesCol" editable="false" prefWidth="85.0" resizable="false"
-                                         sortable="false" text="Tripples"/>
-                        <TreeTableColumn fx:id="arrivalCol" editable="false" prefWidth="150.0" resizable="false"
-                                         sortable="false" text="Arrival"/>
-                        <TreeTableColumn fx:id="departureCol" editable="false" prefWidth="150.0" resizable="false"
-                                         sortable="false" text="Departure"/>
-                        <TreeTableColumn fx:id="daysCol" editable="false" prefWidth="50.0" resizable="false"
-                                         sortable="false" text="Day"/>
-                        <TreeTableColumn fx:id="nightsCol" editable="false" prefWidth="70.0" resizable="false"
-                                         sortable="false" text="Nights"/>
-                        <TreeTableColumn fx:id="remarksCol" editable="false" minWidth="0.0" prefWidth="120.0"
-                                         sortable="false" text="Remarks"/>
-                        <TreeTableColumn fx:id="updateCol" editable="false" minWidth="0.0" sortable="false"
-                                         text="Update"/>
-                        <TreeTableColumn fx:id="downloadCol" editable="false" prefWidth="100.0" sortable="false"
-                                         text="Download"/>
+                        <TreeTableColumn fx:id="voucherIdCol" editable="false" prefWidth="40.0" sortable="false" text="ID" />
+                        <TreeTableColumn fx:id="hotelNameCol" editable="false" prefWidth="150.0" sortable="false" text="Hotel Name" />
+                        <TreeTableColumn fx:id="hotelBranchCol" editable="false" prefWidth="150.0" sortable="false" text="Branch" />
+                        <TreeTableColumn fx:id="statusCol" editable="false" prefWidth="90.0" sortable="false" text="Status" />
+                  <TreeTableColumn fx:id="clientNameCol" editable="false" prefWidth="150.0" sortable="false" text="Client name" />
+                  <TreeTableColumn fx:id="clientPhoneCol" editable="false" prefWidth="150.0" sortable="false" text="Client phone" />
+                        <TreeTableColumn fx:id="paymentInfoCol" editable="false" prefWidth="150.0" sortable="false" text="Payment" />
+                        <TreeTableColumn fx:id="adultsCol" editable="false" prefWidth="50.0" sortable="false" text="+18" />
+                        <TreeTableColumn fx:id="childrenCol" editable="false" prefWidth="50.0" sortable="false" text=" -18" />
+                        <TreeTableColumn fx:id="infantCol" editable="false" prefWidth="70.0" sortable="false" text="Infant" />
+                        <TreeTableColumn fx:id="resCol" editable="false" prefWidth="50.0" sortable="false" text="Res" />
+                        <TreeTableColumn fx:id="nonResCol" editable="false" prefWidth="90.0" sortable="false" text="Non- Res" />
+                        <TreeTableColumn fx:id="singlesCol" editable="false" prefWidth="75.0" sortable="false" text="Singles" />
+                        <TreeTableColumn fx:id="doublesCol" editable="false" prefWidth="85.0" sortable="false" text="Doubles" />
+                        <TreeTableColumn fx:id="triplesCol" editable="false" prefWidth="85.0" sortable="false" text="Tripples" />
+                        <TreeTableColumn fx:id="arrivalCol" editable="false" prefWidth="150.0" sortable="false" text="Arrival" />
+                        <TreeTableColumn fx:id="departureCol" editable="false" prefWidth="150.0" sortable="false" text="Departure" />
+                        <TreeTableColumn fx:id="daysCol" editable="false" prefWidth="50.0" sortable="false" text="Day" />
+                        <TreeTableColumn fx:id="nightsCol" editable="false" prefWidth="70.0" sortable="false" text="Nights" />
+                        <TreeTableColumn fx:id="remarksCol" editable="false" minWidth="0.0" prefWidth="120.0" sortable="false" text="Remarks" />
+                        <TreeTableColumn fx:id="updateCol" editable="false" minWidth="0.0" prefWidth="120.0" sortable="false" text="Update" />
+                        <TreeTableColumn fx:id="downloadCol" editable="false" prefWidth="100.0" sortable="false" text="Download" />
                     </columns>
                 </JFXTreeTableView>
             </content>

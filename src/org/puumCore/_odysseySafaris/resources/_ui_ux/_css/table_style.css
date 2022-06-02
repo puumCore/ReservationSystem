@@ -11,15 +11,14 @@
 }
 
 .tree-table-cell {
-   -fx-alignment: CENTER_LEFT;
-   -fx-padding: 0 15;
+   -fx-alignment: CENTER;
+   /*-fx-padding: 0 15;*/
 }
 
 .tree-table-view .cell {
     -fx-font-family: 'Montserrat Medium';
     -fx-font-size: 12px;
     -fx-text-fill: #000000;
-    /*-fx-alignment: CENTER_LEFT;*/
     -fx-cell-size: 25px;
     -fx-background-color: #f4f9fb;
     -fx-border-color: #f4f9fb;
@@ -35,7 +34,7 @@
 
 .tree-table-view .increment-button, .tree-table-view .decrement-button {
     -fx-background-color: transparent;
-    -fx-bacground-radius: 2em;
+    -fx-background-radius: 2em;
 }
 
 .tree-table-view .scroll-bar:horizontal .track, .tree-table-view .scroll-bar:vertical .track {
