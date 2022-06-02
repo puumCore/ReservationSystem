@@ -285,7 +285,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`developer`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `reservations` AS select `v`.`voucherId` AS `voucherId`,`h`.`name` AS `hotel_name`,`h`.`branch` AS `hotel_branch`,`v`.`STATUS` AS `status`,`c`.`name` AS `client_name`,`c`.`phone` AS `client_phone`,`hc`.`adults` AS `adults`,`hc`.`children` AS `children`,`hc`.`infants` AS `infants`,`hc`.`reservations` AS `reservations`,`hc`.`adults` + `hc`.`children` + `hc`.`infants` - `hc`.`reservations` AS `non_res`,`rt`.`singles` AS `singles`,`rt`.`doubles` AS `doubles`,`rt`.`tripplets` AS `tripplets`,`tl`.`arrival` AS `arrival`,`tl`.`departure` AS `departure`,`tl`.`days` AS `days`,`tl`.`nights` AS `nights`,`mp`.`bb` AS `bb`,`mp`.`hb` AS `hb`,`mp`.`fb` AS `fb`,`mp`.`lunch` AS `lunch`,`mp`.`dinner` AS `dinner`,`mp`.`xtra_direct` AS `xtra_direct`,`v`.`remarks` AS `remarks`,`v`.`paid_by` AS `paid_by` from ((((((`voucher` `v` join `hotel` `h` on(`v`.`hotelId` = `h`.`hotelId`)) join `client` `c` on(`v`.`clientId` = `c`.`clientId`)) join `head_count` `hc` on(`v`.`countId` = `hc`.`countId`)) join `room_type` `rt` on(`v`.`roomId` = `rt`.`roomId`)) join `time_line` `tl` on(`v`.`unitId` = `tl`.`unitId`)) join `meal_plan` `mp` on(`v`.`planId` = `mp`.`planId`)) order by `v`.`voucherId` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -304,7 +304,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`developer`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `voucher_plus` AS select `v`.`voucherId` AS `voucherId`,`h`.`hotelId` AS `hotelId`,`h`.`name` AS `hotel_name`,`h`.`branch` AS `hotel_branch`,`c`.`clientId` AS `clientId`,`c`.`name` AS `client_name`,`c`.`phone` AS `client_phone`,`hc`.`countId` AS `countId`,`hc`.`adults` AS `adults`,`hc`.`children` AS `children`,`hc`.`infants` AS `infants`,`hc`.`reservations` AS `reservations`,`rt`.`roomId` AS `roomId`,`rt`.`singles` AS `singles`,`rt`.`doubles` AS `doubles`,`rt`.`tripplets` AS `tripplets`,`tl`.`unitId` AS `unitId`,`tl`.`arrival` AS `arrival`,`tl`.`departure` AS `departure`,`tl`.`days` AS `days`,`tl`.`nights` AS `nights`,`mp`.`planId` AS `planId`,`mp`.`bb` AS `bb`,`mp`.`hb` AS `hb`,`mp`.`fb` AS `fb`,`mp`.`lunch` AS `lunch`,`mp`.`dinner` AS `dinner`,`mp`.`xtra_direct` AS `xtra_direct`,`v`.`remarks` AS `remarks`,`v`.`paid_by` AS `paid_by`,`conf`.`confirmId` AS `confirmId`,`conf`.`name` AS `confirm_person_name`,`conf`.`phone` AS `confirm_person_phone` from (((((((`voucher` `v` join `hotel` `h` on(`v`.`hotelId` = `h`.`hotelId`)) join `client` `c` on(`v`.`clientId` = `c`.`clientId`)) join `head_count` `hc` on(`v`.`countId` = `hc`.`countId`)) join `room_type` `rt` on(`v`.`roomId` = `rt`.`roomId`)) join `time_line` `tl` on(`v`.`unitId` = `tl`.`unitId`)) join `meal_plan` `mp` on(`v`.`planId` = `mp`.`planId`)) left join `confirmation` `conf` on(`v`.`confirmId` = `conf`.`confirmId`)) order by `v`.`voucherId` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -319,4 +319,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-14 14:31:59
+-- Dump completed on 2022-06-02 19:35:17
