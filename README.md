@@ -1,5 +1,7 @@
 # ReservationSystem
 
+![logo](https://user-images.githubusercontent.com/54445311/171809812-7632c743-9169-4e17-94d0-f1e5183a0a99.png)
+
 <h3>How to install</h3>
 <ol>
   <li>Install the Montserat fonts.</li>
